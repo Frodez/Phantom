@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.validation.Constraint;
 import phantom.aop.validation.annotation.Mapping;
 import phantom.code.checker.CodeCheckException;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 检查验证注解是否符合类型

@@ -10,7 +10,7 @@ import javax.validation.constraints.Positive;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.annotation.AnnotationUtils;
 import phantom.code.checker.CodeCheckException;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 请求限流注解

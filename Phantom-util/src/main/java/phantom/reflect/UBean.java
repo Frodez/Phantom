@@ -1,4 +1,4 @@
-package phantom.util.reflect;
+package phantom.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -13,12 +13,10 @@ import java.util.function.Supplier;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.cglib.beans.BeanMap;
-import org.springframework.cglib.reflect.FastClass;
-import org.springframework.cglib.reflect.FastMethod;
-import org.springframework.util.Assert;
-import phantom.common.MultiTypeKey;
+import net.sf.cglib.beans.BeanCopier;
+import net.sf.cglib.beans.BeanMap;
+import net.sf.cglib.reflect.FastClass;
+import net.sf.cglib.reflect.FastMethod;
 import phantom.common.UPrimitive;
 import phantom.common.UString;
 
@@ -110,7 +108,9 @@ public class UBean {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> map(Object bean) {
-		Assert.notNull(bean, "bean must not be null");
+		if (bean == null) {
+			throw new IllegalArgumentException();
+		}
 		return new HashMap<>(BeanMap.create(bean));
 	}
 
@@ -120,7 +120,9 @@ public class UBean {
 	 */
 	@SneakyThrows
 	public static <T> T as(Map<String, Object> map, Supplier<T> supplier) {
-		Assert.notNull(map, "map must not be null");
+		if (map == null) {
+			throw new IllegalArgumentException();
+		}
 		T bean = supplier.get();
 		try {
 			BeanMap.create(bean).putAll(map);
@@ -138,7 +140,9 @@ public class UBean {
 	 */
 	@SneakyThrows
 	public static <T> T as(Map<String, Object> map, Class<T> klass) {
-		Assert.notNull(map, "map must not be null");
+		if (map == null) {
+			throw new IllegalArgumentException();
+		}
 		T bean = UReflect.instance(klass);
 		try {
 			BeanMap.create(bean).putAll(map);
@@ -178,7 +182,9 @@ public class UBean {
 	 */
 	@SneakyThrows
 	public static void clear(Object bean) {
-		Assert.notNull(bean, "bean must not be null");
+		if (bean == null) {
+			throw new IllegalArgumentException();
+		}
 		List<FastMethod> methods = setters(bean.getClass());
 		int length = methods.size();
 		for (int i = 0; i < length; i++) {

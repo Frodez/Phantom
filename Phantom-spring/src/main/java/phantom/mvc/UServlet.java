@@ -1,4 +1,4 @@
-package phantom.util;
+package phantom.mvc;
 
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import phantom.mvc.data.Result.Value;
  */
 @Slf4j
 @UtilityClass
-public class UHttp {
+public class UServlet {
 
 	/**
 	 * 从spring上下文中获取HttpServletResponse

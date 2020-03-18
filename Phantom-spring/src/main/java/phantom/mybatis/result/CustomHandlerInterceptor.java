@@ -19,7 +19,7 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Invocation;
 import org.springframework.stereotype.Component;
 import phantom.mybatis.result.CustomHandler.CustomHandlerContext;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 自定义CustomHandler拦截器

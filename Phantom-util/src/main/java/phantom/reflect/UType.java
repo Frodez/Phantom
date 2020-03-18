@@ -1,4 +1,4 @@
-package phantom.util.reflect;
+package phantom.reflect;
 
 import com.fasterxml.classmate.ResolvedType;
 import com.fasterxml.classmate.TypeResolver;

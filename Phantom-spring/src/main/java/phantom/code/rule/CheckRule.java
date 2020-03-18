@@ -3,7 +3,7 @@ package phantom.code.rule;
 import java.lang.reflect.Method;
 import phantom.aop.validation.annotation.Check;
 import phantom.code.checker.CodeCheckException;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 检查@Check注解

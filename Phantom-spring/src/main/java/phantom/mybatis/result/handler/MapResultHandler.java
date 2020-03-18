@@ -13,7 +13,7 @@ import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultContext;
 import phantom.mybatis.result.CustomHandler;
-import phantom.util.reflect.UType;
+import phantom.reflect.UType;
 
 /**
  * Map自定义ResultHandler<br>

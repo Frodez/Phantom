@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import phantom.aop.validation.annotation.Check;
 import phantom.code.annotation.Checkable;
 import phantom.code.checker.CodeCheckException;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 检查@Valid注解

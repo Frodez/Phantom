@@ -11,12 +11,12 @@ import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.stereotype.Component;
+import phantom.aop.UAOP;
 import phantom.aop.request.annotation.Limit;
 import phantom.aop.request.annotation.Limit.LimitHelper;
 import phantom.common.Pair;
 import phantom.configuration.CacheProperties;
 import phantom.mvc.data.Result;
-import phantom.util.UAOP;
 
 /**
  * 请求限流AOP切面

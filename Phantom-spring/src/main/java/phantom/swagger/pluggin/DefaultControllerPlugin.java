@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import phantom.common.UString;
 import phantom.configuration.SwaggerProperties;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 import springfox.documentation.builders.ApiListingBuilder;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.ApiListingBuilderPlugin;

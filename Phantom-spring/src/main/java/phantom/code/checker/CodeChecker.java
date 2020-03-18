@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import org.springframework.util.Assert;
 import phantom.code.rule.Rule;
-import phantom.util.reflect.UBean;
+import phantom.reflect.UBean;
 
 /**
  * 代码检查器

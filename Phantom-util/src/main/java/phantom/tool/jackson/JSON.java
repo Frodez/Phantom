@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.SneakyThrows;
-import phantom.common.MultiTypeKey;
 import phantom.common.UEmpty;
+import phantom.reflect.MultiTypeKey;
 
 /**
  * json工具类<br>

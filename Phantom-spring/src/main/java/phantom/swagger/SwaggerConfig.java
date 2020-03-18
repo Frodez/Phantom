@@ -22,7 +22,7 @@ import phantom.mvc.data.QueryPage;
 import phantom.mvc.data.Result;
 import phantom.mvc.data.Result.State;
 import phantom.mvc.data.Result.Value;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;

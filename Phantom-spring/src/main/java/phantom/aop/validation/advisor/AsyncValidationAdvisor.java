@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import phantom.aop.UAOP;
 import phantom.aop.validation.annotation.Check;
 import phantom.code.checker.CodeChecker;
 import phantom.mvc.data.Result;
 import phantom.tool.validate.Validate;
-import phantom.util.UAOP;
 
 /**
  * 验证参数AOP<br>

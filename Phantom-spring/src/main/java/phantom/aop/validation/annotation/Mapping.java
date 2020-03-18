@@ -23,9 +23,9 @@ import javax.validation.Payload;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import phantom.common.UString;
+import phantom.reflect.UReflect;
+import phantom.reflect.UType;
 import phantom.tool.validate.Validate;
-import phantom.util.reflect.UReflect;
-import phantom.util.reflect.UType;
 
 /**
  * 枚举类型映射注解 <br>

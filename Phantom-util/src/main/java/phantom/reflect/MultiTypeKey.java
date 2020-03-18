@@ -1,4 +1,4 @@
-package phantom.common;
+package phantom.reflect;
 
 import java.lang.reflect.Type;
 

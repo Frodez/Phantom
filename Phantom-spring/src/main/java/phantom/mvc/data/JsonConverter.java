@@ -22,8 +22,8 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
-import phantom.common.MultiTypeKey;
 import phantom.common.UString;
+import phantom.reflect.MultiTypeKey;
 import phantom.tool.jackson.JSON;
 
 /**

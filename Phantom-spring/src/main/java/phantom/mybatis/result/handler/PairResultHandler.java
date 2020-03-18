@@ -10,7 +10,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultContext;
 import phantom.common.Pair;
 import phantom.mybatis.result.CustomHandler;
-import phantom.util.reflect.UType;
+import phantom.reflect.UType;
 
 /**
  * Pair自定义ResultHandler<br>

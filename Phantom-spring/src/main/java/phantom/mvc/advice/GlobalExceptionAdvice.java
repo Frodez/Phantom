@@ -7,8 +7,8 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
+import phantom.mvc.UServlet;
 import phantom.mvc.data.Result;
-import phantom.util.UHttp;
 
 /***
  * 错误信息处理
@@ -27,7 +27,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(value = Exception.class)
 	public void exceptionHandler(HttpServletResponse response, Exception e) {
 		log.error(e.getMessage());
-		UHttp.writeJson(response, Result.errorService(e));
+		UServlet.writeJson(response, Result.errorService(e));
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(value = HttpMessageConversionException.class)
 	public void exceptionHandler(HttpServletResponse response, HttpMessageConversionException e) {
 		log.error(e.getMessage());
-		UHttp.writeJson(response, Result.errorRequest());
+		UServlet.writeJson(response, Result.errorRequest());
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(value = ServletRequestBindingException.class)
 	public void exceptionHandler(HttpServletResponse response, ServletRequestBindingException e) {
 		log.error(e.getMessage());
-		UHttp.writeJson(response, Result.errorRequest());
+		UServlet.writeJson(response, Result.errorRequest());
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(value = AsyncRequestTimeoutException.class)
 	public void exceptionHandler(HttpServletResponse response, AsyncRequestTimeoutException e) {
 		log.error(e.getMessage());
-		UHttp.writeJson(response, Result.busy());
+		UServlet.writeJson(response, Result.busy());
 	}
 
 }

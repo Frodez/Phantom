@@ -12,14 +12,14 @@ import org.springframework.aop.PointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+import phantom.aop.UAOP;
 import phantom.aop.request.annotation.RepeatLock;
 import phantom.aop.request.annotation.TimeoutLock;
 import phantom.aop.request.annotation.RepeatLock.RepeatLockHelper;
 import phantom.aop.request.checker.ManualChecker;
+import phantom.mvc.UServlet;
 import phantom.mvc.data.Result;
-import phantom.util.UAOP;
-import phantom.util.UHttp;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 控制重复请求AOP切面
@@ -39,11 +39,11 @@ public class RepeatAdvisor implements PointcutAdvisor {
 	 * 执行器
 	 */
 	private Advice advice = (MethodInterceptor) invocation -> {
-		HttpServletRequest request = UHttp.request();
+		HttpServletRequest request = UServlet.request();
 		String key = Util.servletKey(UReflect.fullName(invocation.getMethod()), request);
 		try {
 			if (checker.check(key)) {
-				log.info("重复请求:IP地址{}", UHttp.getAddr(request));
+				log.info("重复请求:IP地址{}", UServlet.getAddr(request));
 				return Result.repeatRequest();
 			}
 			checker.lock(key);

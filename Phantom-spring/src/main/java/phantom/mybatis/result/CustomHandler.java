@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
-import phantom.util.reflect.UBean;
+import phantom.reflect.UBean;
 
 /**
  * 自定义ResultHandler<br>

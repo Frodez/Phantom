@@ -10,7 +10,7 @@ import javax.validation.constraints.Positive;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.annotation.AnnotationUtils;
 import phantom.code.checker.CodeCheckException;
-import phantom.util.reflect.UReflect;
+import phantom.reflect.UReflect;
 
 /**
  * 控制重复请求注解(带过期时间),只用于controller中的端点<br>

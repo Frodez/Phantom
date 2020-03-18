@@ -1,4 +1,4 @@
-package phantom.util.reflect;
+package phantom.reflect;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -9,10 +9,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import org.springframework.cglib.reflect.FastClass;
-import org.springframework.cglib.reflect.FastMethod;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
+import net.sf.cglib.reflect.FastClass;
+import net.sf.cglib.reflect.FastMethod;
 import phantom.common.UString;
 
 /**
@@ -73,7 +71,9 @@ public class UReflect {
 	 */
 	@SneakyThrows
 	public static FastMethod fastMethod(Class<?> klass, String method, Class<?>... params) {
-		Assert.notNull(method, "method must not be null");
+		if (method == null) {
+			throw new IllegalArgumentException();
+		}
 		Table table = CGLIB_CACHE.get(klass);
 		if (table == null) {
 			table = new Table(klass);
@@ -160,7 +160,7 @@ public class UReflect {
 	 */
 	@SuppressWarnings("deprecation")
 	@SneakyThrows
-	public static void set(Class<?> klass, String fieldName, @Nullable Object target, @Nullable Object value) {
+	public static void set(Class<?> klass, String fieldName, Object target, Object value) {
 		String identifier = UString.concat(klass.getCanonicalName(), ".", fieldName);
 		MethodHandle handle = SETTER_CACHE.get(identifier);
 		if (handle == null) {
@@ -187,7 +187,7 @@ public class UReflect {
 	 */
 	@SuppressWarnings("deprecation")
 	@SneakyThrows
-	public static void set(Field field, @Nullable Object target, @Nullable Object value) {
+	public static void set(Field field, Object target, Object value) {
 		String identifier = UString.concat(field.getDeclaringClass().getCanonicalName(), ".", field.getName());
 		MethodHandle handle = SETTER_CACHE.get(identifier);
 		if (handle == null) {
@@ -213,7 +213,7 @@ public class UReflect {
 	 */
 	@SuppressWarnings("deprecation")
 	@SneakyThrows
-	public static Object get(Class<?> klass, String fieldName, @Nullable Object target) {
+	public static Object get(Class<?> klass, String fieldName, Object target) {
 		String identifier = UString.concat(klass.getCanonicalName(), ".", fieldName);
 		MethodHandle handle = GETTER_CACHE.get(identifier);
 		if (handle == null) {
@@ -236,7 +236,7 @@ public class UReflect {
 	 */
 	@SuppressWarnings("deprecation")
 	@SneakyThrows
-	public static Object get(Field field, @Nullable Object target) {
+	public static Object get(Field field, Object target) {
 		String identifier = UString.concat(field.getDeclaringClass().getCanonicalName(), ".", field.getName());
 		MethodHandle handle = GETTER_CACHE.get(identifier);
 		if (handle == null) {

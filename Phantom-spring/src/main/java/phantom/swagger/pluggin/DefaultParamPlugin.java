@@ -32,7 +32,7 @@ import phantom.aop.validation.annotation.Mapping.IMapping;
 import phantom.aop.validation.annotation.Mapping.MappingHelper;
 import phantom.common.UString;
 import phantom.configuration.SwaggerProperties;
-import phantom.util.reflect.UType;
+import phantom.reflect.UType;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.schema.Example;
 import springfox.documentation.service.AllowableListValues;
