@@ -1,0 +1,105 @@
+package phantom.mybatis.result;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.ResultHandler;
+import phantom.util.reflect.UBean;
+
+/**
+ * 自定义ResultHandler<br>
+ * 目的在于不要使用默认的ResultHandler。<br>
+ * @author Frodez
+ */
+public interface CustomHandler extends ResultHandler<Object> {
+
+	/**
+	 * 是否支持本方法的返回值类型。
+	 * @author Frodez
+	 */
+	boolean support(List<ResultMap> resultMaps);
+
+	/**
+	 * 获取返回值<br>
+	 * <strong>因为PageHelper插件中返回值首先被解析为List，所以如果使用PageHelper插件，则这里必须返回List</strong><br>
+	 * 如果没有PageHelper插件,请自己按需修改。<br>
+	 * @see com.github.pagehelper.PageInterceptor#intercept(org.apache.ibatis.plugin.Invocation)
+	 * @author Frodez
+	 */
+	Object getResult();
+
+	/**
+	 * 设置上下文
+	 * @author Frodez
+	 */
+	void setContext(CustomHandlerContext context);
+
+	/**
+	 * 获取本Handler在本Method下的上下文
+	 * @author Frodez
+	 */
+	CustomHandlerContext resolveContext(Method method, Configuration configuration);
+
+	/**
+	 * 上下文接口
+	 * @author Frodez
+	 */
+	public interface CustomHandlerContext {
+
+	}
+
+	/**
+	 * 对象转换接口
+	 * @author Frodez
+	 */
+	@FunctionalInterface
+	public interface ObjectResolver {
+
+		/**
+		 * 对象转换
+		 * @author Frodez
+		 */
+		Object transform(Object object);
+
+	}
+
+	/**
+	 * map类型转换上下文<br>
+	 * @author Frodez
+	 */
+	public class MapCondition implements ObjectResolver {
+
+		private Class<?> klass;
+
+		private boolean isResolved = false;
+
+		private MapCondition(Class<?> klass, boolean isResolved) {
+			this.klass = klass;
+			this.isResolved = isResolved;
+		}
+
+		public static MapCondition generate(Class<?> klass, Configuration configuration) {
+			boolean isResolved = configuration.getTypeHandlerRegistry().hasTypeHandler(klass);
+			MapCondition condition = new MapCondition(klass, isResolved);
+			return condition;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public Object transform(Object object) {
+			if (Map.class.isAssignableFrom(object.getClass())) {
+				if (isResolved) {
+					return ((Map<String, Object>) object).values().iterator().next();
+				} else {
+					return UBean.as((Map<String, Object>) object, this.klass);
+				}
+			} else {
+				return object;
+			}
+		}
+
+	}
+
+}

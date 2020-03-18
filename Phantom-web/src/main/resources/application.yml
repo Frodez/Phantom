@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: dev
+    
+server:
+  http2:
+    enabled: true
+  error:
+    path: /error
+  servlet:
+    context-path: /api
+    
+pagehelper:
+  row-bounds-with-count: true
+  helperDialect: mysql
+  params: count=countSql
+  pageSizeZero: true
+  supportMethodsArguments: true

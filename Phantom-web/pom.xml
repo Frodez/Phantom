@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+  	<parent>
+    	<groupId>Phantom</groupId>
+    	<artifactId>Phantom</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	<groupId>Phantom-web</groupId>
+  	<artifactId>Phantom-web</artifactId>
+  	
+  	<dependencies>
+  	
+  		<dependency>
+  			<groupId>Phantom-util</groupId>
+  			<artifactId>Phantom-util</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		
+  		<dependency>
+  			<groupId>Phantom-spring</groupId>
+  			<artifactId>Phantom-spring</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+		
+		<!-- undertow -->
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-core</artifactId>
+			<version>2.0.29.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-servlet</artifactId>
+			<version>2.0.29.Final</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-servlet-api_4.0_spec</artifactId>
+					<groupId>org.jboss.spec.javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-websockets-jsr</artifactId>
+			<version>2.0.29.Final</version>
+		</dependency>
+  		
+  	</dependencies>
+  	
+  	<build>
+  		<resources>
+        	<resource>
+            	<directory>src/main/resources</directory>
+            	<filtering>true</filtering>
+        	</resource>
+    	</resources>
+  		<plugins>
+  			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+						<exclude>
+							<groupId>org.mybatis.generator</groupId>
+							<artifactId>mybatis-generator-core</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+  			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-xmls</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/phantom/dao/mapper</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/java/phantom/dao/mapper</directory>
+									<includes>
+										<include>**/*.xml</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+  		</plugins>
+  	</build>
+  	
+</project>
