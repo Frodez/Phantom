@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import phantom.code.annotation.Checkable;
 import phantom.code.checker.CodeChecker;
 import phantom.configuration.CodeCheckProperties;
-import phantom.ioc.UContext;
+import phantom.context.UContext;
 
 /**
  * 代码检查执行器<br>

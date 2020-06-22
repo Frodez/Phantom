@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="phantom.dao.mapper.ArticleMapper">
+
+	<select id="selectArticleDetail" resultType="phantom.dao.model.result.ArticleDetail">
+    SELECT
+		tb_article.id AS id,
+		tb_article.create_time AS createTime,
+		tb_article.update_time AS updateTime,
+		tb_article.author_id AS authorId,
+		tb_user.`name` AS author,
+		tb_article.category_id AS categoryId,
+		tb_category.`name` AS category,
+		tb_article.`name` AS `name`,
+		tb_article.introduction AS introduction,
+		tb_article.content AS content,
+		tb_article.clicks AS clicks,
+		tb_article.likes AS likes,
+		tb_article.dislikes AS dislikes 
+	FROM
+		tb_article
+		INNER JOIN tb_user ON tb_article.author_id = tb_user.id
+		INNER JOIN tb_category ON tb_article.category_id = tb_user.id 
+	WHERE 
+		tb_article.id = #{articleId}
+	AND tb_article.`status` = 1 
+	</select>
+    
+    <select id="selectArticleInfo" resultType="phantom.dao.model.result.ArticleInfo">
+    SELECT
+		tb_article.id AS id,
+		tb_article.create_time AS createTime,
+		tb_article.update_time AS updateTime,
+		tb_article.author_id AS authorId,
+		tb_user.`name` AS author,
+		tb_article.category_id AS categoryId,
+		tb_category.`name` AS category,
+		tb_article.`name` AS `name`,
+		tb_article.introduction AS introduction,
+		tb_article.clicks AS clicks,
+		tb_article.likes AS likes,
+		tb_article.dislikes AS dislikes 
+	FROM
+		tb_article
+		INNER JOIN tb_user ON tb_article.author_id = tb_user.id
+		INNER JOIN tb_category ON tb_article.category_id = tb_user.id 
+	<trim prefix="WHERE" prefixOverrides="AND">
+		AND tb_article.`status` = 1
+		<choose>
+			<when test="param.startCreateTime != null and param.endCreateTime != null">
+				<![CDATA[ AND date(tb_article.create_time) between #{param.startCreateTime} and #{param.endCreateTime} ]]>
+			</when>
+			<when test="param.startCreateTime != null and param.endCreateTime == null">
+				<![CDATA[ AND date(tb_article.create_time) >= #{param.startCreateTime} ]]>
+			</when>
+			<when test="param.startCreateTime == null and param.endCreateTime != null">
+				<![CDATA[ AND date(tb_article.create_time) <= #{param.endCreateTime} ]]>
+			</when>
+		</choose>
+		<choose>
+			<when test="param.startUpdateTime != null and param.endUpdateTime != null">
+				<![CDATA[ AND date(tb_article.update_time) between #{param.startUpdateTime} and #{param.endUpdateTime} ]]>
+			</when>
+			<when test="param.startUpdateTime != null and param.endUpdateTime == null">
+				<![CDATA[ AND date(tb_article.update_time) >= #{param.startUpdateTime} ]]>
+			</when>
+			<when test="param.startUpdateTime == null and param.endUpdateTime != null">
+				<![CDATA[ AND date(tb_article.update_time) <= #{param.endUpdateTime} ]]>
+			</when>
+		</choose>
+	</trim>
+	<trim prefix="ORDER BY" suffixOverrides=",">
+		<choose>
+			<when test="param.createTime == 1">
+				tb_article.create_time ASC,
+			</when>
+			<when test="param.createTime == 2">
+				tb_article.create_time DESC,
+			</when>
+		</choose>
+		<choose>
+			<when test="param.updateTime == 1">
+				tb_article.update_time ASC,
+			</when>
+			<when test="param.updateTime == 2">
+				tb_article.update_time DESC,
+			</when>
+		</choose>
+		<choose>
+			<when test="param.clicks == 1">
+				tb_article.clicks ASC,
+			</when>
+			<when test="param.clicks == 2">
+				tb_article.clicks DESC,
+			</when>
+		</choose>
+		<choose>
+			<when test="param.likes == 1">
+				tb_article.likes ASC,
+			</when>
+			<when test="param.likes == 2">
+				tb_article.likes DESC,
+			</when>
+		</choose>
+		<choose>
+			<when test="param.dislikes == 1">
+				tb_article.dislikes ASC,
+			</when>
+			<when test="param.dislikes == 2">
+				tb_article.dislikes DESC,
+			</when>
+		</choose>
+	</trim>
+    </select>
+    
+</mapper>

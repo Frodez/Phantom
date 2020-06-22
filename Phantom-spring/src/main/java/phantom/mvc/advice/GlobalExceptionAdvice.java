@@ -26,8 +26,8 @@ public class GlobalExceptionAdvice {
 	 */
 	@ExceptionHandler(value = Exception.class)
 	public void exceptionHandler(HttpServletResponse response, Exception e) {
-		log.error(e.getMessage());
-		UServlet.writeJson(response, Result.errorService(e));
+		log.error("Exception", e);
+		UServlet.writeJson(response, Result.errorService());
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class GlobalExceptionAdvice {
 	 */
 	@ExceptionHandler(value = HttpMessageConversionException.class)
 	public void exceptionHandler(HttpServletResponse response, HttpMessageConversionException e) {
-		log.error(e.getMessage());
+		log.error("HttpMessageConversionException", e);
 		UServlet.writeJson(response, Result.errorRequest());
 	}
 
@@ -50,7 +50,7 @@ public class GlobalExceptionAdvice {
 	 */
 	@ExceptionHandler(value = ServletRequestBindingException.class)
 	public void exceptionHandler(HttpServletResponse response, ServletRequestBindingException e) {
-		log.error(e.getMessage());
+		log.error("ServletRequestBindingException", e);
 		UServlet.writeJson(response, Result.errorRequest());
 	}
 
@@ -62,7 +62,7 @@ public class GlobalExceptionAdvice {
 	 */
 	@ExceptionHandler(value = AsyncRequestTimeoutException.class)
 	public void exceptionHandler(HttpServletResponse response, AsyncRequestTimeoutException e) {
-		log.error(e.getMessage());
+		log.error("AsyncRequestTimeoutException", e);
 		UServlet.writeJson(response, Result.busy());
 	}
 

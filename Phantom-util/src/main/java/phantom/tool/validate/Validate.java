@@ -96,8 +96,7 @@ public class Validate {
 	 * @author Frodez
 	 */
 	private static String getErrorMessage(Set<ConstraintViolation<Object>> violations) {
-		List<String> messages = violations.stream().map(Validate::getErrorMessage).filter((message) -> message != null).collect(Collectors
-			.toList());
+		List<String> messages = violations.stream().map(Validate::getErrorMessage).filter((message) -> message != null).collect(Collectors.toList());
 		return String.join(";\n", messages);
 	}
 
@@ -127,10 +126,6 @@ public class Validate {
 	private static Predicate<Node> isErrorSouce = (node) -> {
 		switch (node.getKind()) {
 			case PROPERTY :
-				return true;
-			case PARAMETER :
-				return true;
-			case CROSS_PARAMETER :
 				return true;
 			case CONTAINER_ELEMENT :
 				return true;

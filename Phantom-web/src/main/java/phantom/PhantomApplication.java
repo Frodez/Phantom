@@ -1,5 +1,6 @@
 package phantom;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
@@ -115,7 +116,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class PhantomApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PhantomApplication.class, args);
+		SpringApplication application = new SpringApplication(PhantomApplication.class);
+		application.setBannerMode(Banner.Mode.OFF);
+		application.run(args);
 	}
 
 }

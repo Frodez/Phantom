@@ -1,19 +1,19 @@
 package phantom.aop.validation.annotation;
 
 import com.fasterxml.classmate.ResolvedType;
+import com.google.common.collect.ImmutableMap;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.validation.Constraint;
@@ -22,6 +22,7 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import phantom.annotation.Description;
 import phantom.common.UString;
 import phantom.reflect.UReflect;
 import phantom.reflect.UType;
@@ -33,8 +34,8 @@ import phantom.tool.validate.Validate;
  * 1.枚举必须继承IMapping&lt;V&gt;接口。类型参数V指定了可以映射到枚举上的类型。详情见IMapping接口。<br>
  * 2.枚举必须实现一个public static Enum of(V value)方法。V的类型为基本类型时,可以为对应装箱类,反之亦然;其他类型时必须严格对应。<br>
  * 3.方法名由MappingHelper.VALIDATE_METHOD指定。该方法必须在映射成功时返回对应枚举,失败时返回null。<br>
- * 4.枚举必须拥有一个public static final V defaultValue字段。<br>
- * 5.字段名由MappingHelper.DEFAULT_VALUE_FIELD指定,类型同IMapping的类型参数V。<br>
+ * 4.枚举应拥有一个public static final V defaultValue字段。字段用于指定默认值。如果字段值为null或者无该字段,默认值被指定为null。<br>
+ * 5.该字段名由MappingHelper.DEFAULT_VALUE_FIELD指定,类型同IMapping的类型参数V。<br>
  * </strong><br>
  * 注解使用范例:<br>
  * <code>
@@ -69,7 +70,33 @@ public @interface Mapping {
 	Class<? extends Enum<?>> value();
 
 	/**
-	 * 实现Mapping功能继承接口。只用于枚举上,且枚举如果不继承该接口,将无法通过检查,从而使用Mapping功能。
+	 * 实现Mapping功能继承接口。只用于枚举上,且枚举如果不继承该接口,将无法通过检查,从而使用Mapping功能。<br>
+	 * 示例代码如下:<br>
+	 *
+	 * <pre>
+	 * &#64;Getter
+	 * &#64;AllArgsConstructor
+	 * public enum Enum implements IMapping&lt;Byte&gt; {
+	 *
+	 * 	YES((byte) 1, "YES"),
+	 *
+	 * 	NO((byte) 2, "NO");
+	 *
+	 * 	private Byte val;
+	 *
+	 * 	private String desc;
+	 *
+	 * 	private static final Map<Byte, Enum> enumMap = MappingHelper.generateMap(Enum.class);
+	 *
+	 * 	public static final Byte defaultValue = YES.val;
+	 *
+	 * 	public static Enum of(Byte value) {
+	 * 		return enumMap.get(value);
+	 * 	}
+	 *
+	 * }
+	 * </pre>
+	 *
 	 * @author Frodez
 	 */
 	public interface IMapping<V> {
@@ -105,10 +132,15 @@ public @interface Mapping {
 		 */
 		public static final String DEFAULT_VALUE_FIELD = "defaultValue";
 
-		private static final Map<Class<? extends Enum<?>>, MappingInfo> CACHE = new ConcurrentHashMap<>();
+		private static final Map<Class<? extends Enum<?>>, MappingInfo> CACHE = new HashMap<>();
 
-		private static MappingInfo get(Class<? extends Enum<?>> klass) throws Throwable {
-			return CACHE.computeIfAbsent(klass, (key) -> generateAndCheck(key));
+		private static MappingInfo get(Class<? extends Enum<?>> klass) {
+			MappingInfo info = CACHE.get(klass);
+			if (info == null) {
+				info = generateAndCheck(klass);
+				CACHE.put(klass, info);
+			}
+			return info;
 		}
 
 		/**
@@ -117,7 +149,6 @@ public @interface Mapping {
 		 * @param enumType Mapping中的枚举类型
 		 * @author Frodez
 		 */
-		@SneakyThrows
 		public static void isLegal(Class<?> valueType, Class<? extends Enum<?>> enumType) {
 			Class<?> paramType = get(enumType).method.type().parameterType(0);
 			if (UType.isBoxType(paramType)) {
@@ -130,10 +161,17 @@ public @interface Mapping {
 		}
 
 		/**
+		 * 获取枚举名称
+		 * @author Frodez
+		 */
+		public static String getName(Class<? extends Enum<?>> klass) {
+			return get(klass).name;
+		}
+
+		/**
 		 * 获取验证方法
 		 * @author Frodez
 		 */
-		@SneakyThrows
 		public static MethodHandle getMethod(Class<? extends Enum<?>> klass) {
 			return get(klass).method;
 		}
@@ -142,7 +180,6 @@ public @interface Mapping {
 		 * 获取错误信息
 		 * @author Frodez
 		 */
-		@SneakyThrows
 		public static String getErrorMessage(Class<? extends Enum<?>> klass) {
 			return get(klass).errorMessage;
 		}
@@ -151,7 +188,6 @@ public @interface Mapping {
 		 * 获取所有允许的枚举值
 		 * @author Frodez
 		 */
-		@SneakyThrows
 		public static List<IMapping<?>> getEnums(Class<? extends Enum<?>> klass) {
 			return get(klass).enums;
 		}
@@ -160,7 +196,6 @@ public @interface Mapping {
 		 * 获取默认的枚举值
 		 * @author Frodez
 		 */
-		@SneakyThrows
 		public static Object getDefaultValue(Class<? extends Enum<?>> klass) {
 			return get(klass).defaultValue;
 		}
@@ -170,6 +205,11 @@ public @interface Mapping {
 		 * @author Frodez
 		 */
 		private static class MappingInfo {
+
+			/**
+			 * 名称
+			 */
+			public String name;
 
 			/**
 			 * 验证方法
@@ -200,6 +240,10 @@ public @interface Mapping {
 		@SneakyThrows
 		private static MappingInfo generateAndCheck(Class<? extends Enum<?>> klass) {
 			MappingInfo info = new MappingInfo();
+			Description description = klass.getAnnotation(Description.class);
+			if (description != null) {
+				info.name = description.name();
+			}
 			//解析类型
 			ResolvedType imappingType = Stream.of(klass.getGenericInterfaces()).map((type) -> UType.resolve(type)).filter((type) -> {
 				return type.getErasedType() == IMapping.class;
@@ -224,19 +268,50 @@ public @interface Mapping {
 			}).findAny().orElseThrow(() -> new IllegalArgumentException("未找到符合要求的验证方法!"));
 			info.method = UReflect.LOOKUP.unreflect(validateMethod);
 			//info.defaultValue
-			Object defaultValue = UReflect.get(klass, DEFAULT_VALUE_FIELD, null);
-			if (defaultValue.getClass() != valueType) {
-				throw new IllegalArgumentException("默认值类型和" + IMapping.class.getCanonicalName() + "的类型参数不一致");
+			try {
+				Object defaultValue = UReflect.get(klass, DEFAULT_VALUE_FIELD, null);
+				if (defaultValue != null && defaultValue.getClass() != valueType) {
+					throw new IllegalArgumentException("默认值类型和" + IMapping.class.getCanonicalName() + "的类型参数不一致");
+				}
+				info.defaultValue = defaultValue;
+			} catch (Throwable e) {
+				e.printStackTrace();
+				if (e instanceof NoSuchFieldException) {
+					info.defaultValue = null;
+				}
 			}
-			info.defaultValue = defaultValue;
 			//info.enums
-			IMapping<?>[] enums = (IMapping<?>[]) UReflect.LOOKUP.findStatic(klass, "values", MethodType.methodType(void.class)).invoke();
+			Method method = klass.getDeclaredMethod("values");
+			IMapping<?>[] enums = (IMapping<?>[]) UReflect.LOOKUP.unreflect(method).invoke();
 			info.enums = Arrays.asList(enums);
 			//info.errorMessage
 			String introduction = String.join(", ", Stream.of(enums).map((item) -> UString.concat(item.getVal().toString(), ":", item.getDesc()))
 				.collect(Collectors.toList()));
-			info.errorMessage = UString.concat("有效值为", introduction, ",默认值为", defaultValue.toString());
+			if (info.defaultValue == null) {
+				info.errorMessage = UString.concat("有效值为", introduction);
+			} else {
+				info.errorMessage = UString.concat("有效值为", introduction, ",默认值为", info.defaultValue.toString());
+			}
 			return info;
+		}
+
+		/**
+		 * 为继承了IMapping接口的枚举生成Map
+		 * @author Frodez
+		 */
+		@SneakyThrows
+		@SuppressWarnings("unchecked")
+		public static <V, E> Map<V, E> generateMap(Class<E> klass) {
+			if (!klass.isEnum()) {
+				throw new IllegalArgumentException("klass must be a enum!");
+			}
+			MappingInfo info = get((Class<? extends Enum<?>>) klass);
+			var builder = ImmutableMap.<V, E>builder();
+			for (IMapping<?> iter : info.enums) {
+				E e = (E) iter;
+				builder.put((V) iter.getVal(), e);
+			}
+			return builder.build();
 		}
 
 	}

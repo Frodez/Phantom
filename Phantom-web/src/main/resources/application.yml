@@ -14,5 +14,5 @@ pagehelper:
   row-bounds-with-count: true
   helperDialect: mysql
   params: count=countSql
-  pageSizeZero: true
+  page-size-zero: true
   supportMethodsArguments: true

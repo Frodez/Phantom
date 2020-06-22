@@ -7,7 +7,6 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import phantom.mvc.data.Result;
 import phantom.mvc.data.Result.Value;
 
 /**
@@ -23,7 +22,7 @@ public class HttpStatusAdvice implements ResponseBodyAdvice<Value<?>> {
 	 */
 	@Override
 	public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> converterType) {
-		return methodParameter.getMethod().getReturnType() == Result.class;
+		return Value.class.isAssignableFrom(methodParameter.getMethod().getReturnType());
 	}
 
 	/**

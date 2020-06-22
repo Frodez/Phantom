@@ -23,7 +23,9 @@ import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
 import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.internal.DefaultShellCallback;
 import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
+import phantom.common.UEmpty;
 import phantom.common.UString;
+import phantom.tool.validate.Validate;
 
 /**
  * mybatis-generator生成器<br>
@@ -39,7 +41,12 @@ public class Generator {
 	 */
 	@SneakyThrows
 	public static void run(GeneratorConfiguration param) {
+		String errorMsg = Validate.validate(param);
+		if (UEmpty.no(errorMsg)) {
+			throw new IllegalArgumentException(errorMsg);
+		}
 		CustomSettingsPlugin.MAPPER_NAME = param.getBaseMapperClass().getCanonicalName();
+		//if(UEmpty)
 		List<String> warnings = new ArrayList<>();
 		Configuration configuration = config(param);
 		MyBatisGenerator generator = new MyBatisGenerator(configuration, new DefaultShellCallback(true), warnings);

@@ -100,6 +100,8 @@
 		</logger>
 		<logger name="phantom.dao.mapper" level="DEBUG">
 		</logger>
+		<logger name="springfox" level="INFO">
+		</logger>
 		<asyncRoot level="all" includeLocation="true">
 			<appender-ref ref="Console" />
 			<appender-ref ref="RollingFileInfo" />

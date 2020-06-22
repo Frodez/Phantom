@@ -17,8 +17,6 @@ public class ExistMapperProvider extends MapperTemplate {
 
 	public String existByIds(MappedStatement ms) {
 		final Class<?> entityClass = getEntityClass(ms);
-		//将返回值修改为实体类型
-		setResultType(ms, entityClass);
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT CASE WHEN ");
 		Set<EntityColumn> pkColumns = EntityHelper.getPKColumns(entityClass);
@@ -45,8 +43,6 @@ public class ExistMapperProvider extends MapperTemplate {
 
 	public String existEq(MappedStatement ms) {
 		final Class<?> entityClass = getEntityClass(ms);
-		//将返回值修改为实体类型
-		setResultType(ms, entityClass);
 		String tableName = tableName(entityClass);
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT CASE WHEN ");
@@ -67,8 +63,6 @@ public class ExistMapperProvider extends MapperTemplate {
 
 	public String existIn(MappedStatement ms) {
 		final Class<?> entityClass = getEntityClass(ms);
-		//将返回值修改为实体类型
-		setResultType(ms, entityClass);
 		String tableName = tableName(entityClass);
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT CASE WHEN ");

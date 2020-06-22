@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import phantom.aop.validation.annotation.Check;
 import phantom.code.checker.CodeCheckException;
 import phantom.common.UEmpty;
-import phantom.mvc.data.Result;
+import phantom.mvc.data.Result.Value;
 import phantom.reflect.UReflect;
 
 /**
@@ -55,7 +55,7 @@ public class UAOP {
 			return false;
 		}
 		throw new CodeCheckException("含有", "@", Check.class.getCanonicalName(), "注解的方法", UReflect.fullName(method), "的返回值类型必须为",
-			ListenableFuture.class.getCanonicalName(), "或者", Result.class.getCanonicalName());
+			ListenableFuture.class.getCanonicalName(), "或者", Value.class.getCanonicalName());
 	}
 
 	/**
@@ -78,11 +78,18 @@ public class UAOP {
 			return false;
 		}
 		throw new CodeCheckException("含有", "@", Check.class.getCanonicalName(), "注解的方法", UReflect.fullName(method), "的返回值类型必须为",
-			ListenableFuture.class.getCanonicalName(), "或者", Result.class.getCanonicalName());
+			ListenableFuture.class.getCanonicalName(), "或者", Value.class.getCanonicalName());
 	}
 
 	private static boolean isResult(Type type) {
-		return type instanceof Class ? Result.class.isAssignableFrom((Class<?>) type) : false;
+		if (type instanceof Class) {
+			return Value.class.isAssignableFrom((Class<?>) type);
+		}
+		if (type instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType) type;
+			return Value.class.isAssignableFrom((Class<?>) parameterizedType.getRawType());
+		}
+		return false;
 	}
 
 	private static boolean isAsyncResult(Type type) {
@@ -98,7 +105,14 @@ public class UAOP {
 			return false;
 		}
 		Type typeArgument = types[0];
-		return typeArgument instanceof Class && Result.class.isAssignableFrom((Class<?>) typeArgument);
+		if (typeArgument instanceof Class) {
+			return Value.class.isAssignableFrom((Class<?>) typeArgument);
+		}
+		if (typeArgument instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType) typeArgument;
+			return Value.class.isAssignableFrom((Class<?>) parameterizedType.getRawType());
+		}
+		return false;
 	}
 
 }

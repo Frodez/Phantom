@@ -111,6 +111,7 @@ public @interface AnyExist {
 		}
 
 		@Override
+		@SneakyThrows
 		public boolean isValid(Object value, ConstraintValidatorContext context) {
 			if (value == null) {
 				return true;

@@ -84,7 +84,7 @@ public class UReflect {
 		return table.method(method, params);
 	}
 
-	private class Table {
+	private static class Table {
 
 		FastClass fastClass;
 
@@ -159,8 +159,7 @@ public class UReflect {
 	 * @author Frodez
 	 */
 	@SuppressWarnings("deprecation")
-	@SneakyThrows
-	public static void set(Class<?> klass, String fieldName, Object target, Object value) {
+	public static void set(Class<?> klass, String fieldName, Object target, Object value) throws Throwable {
 		String identifier = UString.concat(klass.getCanonicalName(), ".", fieldName);
 		MethodHandle handle = SETTER_CACHE.get(identifier);
 		if (handle == null) {
@@ -186,8 +185,7 @@ public class UReflect {
 	 * @author Frodez
 	 */
 	@SuppressWarnings("deprecation")
-	@SneakyThrows
-	public static void set(Field field, Object target, Object value) {
+	public static void set(Field field, Object target, Object value) throws Throwable {
 		String identifier = UString.concat(field.getDeclaringClass().getCanonicalName(), ".", field.getName());
 		MethodHandle handle = SETTER_CACHE.get(identifier);
 		if (handle == null) {
@@ -209,11 +207,9 @@ public class UReflect {
 	/**
 	 * 获取指定字段<br>
 	 * target为null时,获取静态字段
-	 * @author Frodez
 	 */
 	@SuppressWarnings("deprecation")
-	@SneakyThrows
-	public static Object get(Class<?> klass, String fieldName, Object target) {
+	public static Object get(Class<?> klass, String fieldName, Object target) throws Throwable {
 		String identifier = UString.concat(klass.getCanonicalName(), ".", fieldName);
 		MethodHandle handle = GETTER_CACHE.get(identifier);
 		if (handle == null) {
@@ -235,8 +231,7 @@ public class UReflect {
 	 * @author Frodez
 	 */
 	@SuppressWarnings("deprecation")
-	@SneakyThrows
-	public static Object get(Field field, Object target) {
+	public static Object get(Field field, Object target) throws Throwable {
 		String identifier = UString.concat(field.getDeclaringClass().getCanonicalName(), ".", field.getName());
 		MethodHandle handle = GETTER_CACHE.get(identifier);
 		if (handle == null) {

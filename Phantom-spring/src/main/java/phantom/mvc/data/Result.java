@@ -1,5 +1,6 @@
 package phantom.mvc.data;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.ImmutableMap;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -124,6 +126,18 @@ public class Result {
 		}
 
 		/**
+		 * 具体类型:<br>
+		 * Function&lt;String, ? extends E&gt; <br>
+		 * &lt;E extends Throwable&gt;
+		 * @author Frodez
+		 */
+		@Override
+		@SuppressWarnings("unchecked")
+		public State testWithMsg(Function function) throws Throwable {
+			return (State) super.testWithMsg(function);
+		}
+
+		/**
 		 * state专用异常
 		 * @author Frodez
 		 */
@@ -145,6 +159,7 @@ public class Result {
 	 */
 	@ToString
 	@EqualsAndHashCode
+	@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 	public static class Value<V> implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -163,6 +178,7 @@ public class Result {
 		 */
 		@NotNull
 		@Getter
+		@ApiModelProperty("状态")
 		private int code;
 
 		/**
@@ -170,12 +186,13 @@ public class Result {
 		 */
 		@NotNull
 		@Getter
+		@ApiModelProperty("消息")
 		private String message;
 
 		/**
 		 * 数据
 		 */
-		@NotNull
+		@ApiModelProperty("数据")
 		private V data;
 
 		/**
@@ -212,6 +229,17 @@ public class Result {
 		public <E extends Throwable> Value<V> test(Function<Value<V>, ? extends E> function) throws E {
 			if (code != ResultEnum.SUCCESS.val) {
 				throw function.apply(this);
+			}
+			return this;
+		}
+
+		/**
+		 * 判断是否可用,如果不可用,则抛出Exception
+		 * @author Frodez
+		 */
+		public <E extends Throwable> Value<V> testWithMsg(Function<String, ? extends E> function) throws E {
+			if (code != ResultEnum.SUCCESS.val) {
+				throw function.apply(this.message);
 			}
 			return this;
 		}

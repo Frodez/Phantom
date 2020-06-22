@@ -51,10 +51,16 @@ public class AsyncValidationAdvisor implements PointcutAdvisor {
 		@Override
 		public boolean matches(Method method, Class<?> targetClass) {
 			//这里可以进行运行前检查
-			if (AnnotationUtils.findAnnotation(method, Check.class) == null || !UAOP.isAsyncResultAsReturn(method)) {
+			if (!UAOP.isAsyncResultAsReturn(method)) {
+				return false;
+			}
+			if (AnnotationUtils.findAnnotation(method, Check.class) == null && AnnotationUtils.findAnnotation(targetClass, Check.class) == null) {
 				return false;
 			}
 			codeChecker.checkMethod(method);
+			if (targetClass.isAnnotationPresent(Check.class) && method.getParameterCount() == 0) {
+				return false;//类上使用Check注解时,不会对无参数方法生效(在checkMethod后使用本判断,以提供必要的警示)
+			}
 			return true;
 		}
 

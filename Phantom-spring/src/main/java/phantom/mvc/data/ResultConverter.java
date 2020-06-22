@@ -32,6 +32,22 @@ public class ResultConverter extends AbstractGenericHttpMessageConverter<Value<?
 	}
 
 	@Override
+	public boolean canRead(Type type, @Nullable Class<?> contextClass, @Nullable MediaType mediaType) {
+		if (type instanceof Class<?> && Value.class.isAssignableFrom((Class<?>) type)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean canWrite(@Nullable Type type, Class<?> clazz, @Nullable MediaType mediaType) {
+		if (type instanceof Class<?> && Value.class.isAssignableFrom((Class<?>) type)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	protected Value<?> readInternal(Class<? extends Value<?>> clazz, HttpInputMessage inputMessage) throws IOException,
 		HttpMessageNotReadableException {
 		return Result.reader().readValue(inputMessage.getBody());

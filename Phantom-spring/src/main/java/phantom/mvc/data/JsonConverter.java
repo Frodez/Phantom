@@ -23,6 +23,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
 import phantom.common.UString;
+import phantom.mvc.data.Result.Value;
 import phantom.reflect.MultiTypeKey;
 import phantom.tool.jackson.JSON;
 
@@ -48,7 +49,10 @@ public class JsonConverter extends AbstractGenericHttpMessageConverter<Object> {
 
 	@Override
 	public boolean canRead(Type type, @Nullable Class<?> contextClass, @Nullable MediaType mediaType) {
-		if (type == Result.class || !canRead(mediaType)) {
+		if (!canRead(mediaType)) {
+			return false;
+		}
+		if (type instanceof Class<?> && Value.class.isAssignableFrom((Class<?>) type)) {
 			return false;
 		}
 		MultiTypeKey typeKey = new MultiTypeKey(type, contextClass);
