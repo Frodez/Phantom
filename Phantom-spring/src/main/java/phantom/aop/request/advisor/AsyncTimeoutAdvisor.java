@@ -64,7 +64,7 @@ public class AsyncTimeoutAdvisor implements PointcutAdvisor {
 
 		@Override
 		public boolean matches(Method method, Class<?> targetClass, Object... args) {
-			//isRuntime()方法返回值为false时,不会进行运行时判断
+			// isRuntime()方法返回值为false时,不会进行运行时判断
 			return false;
 		}
 
@@ -73,12 +73,12 @@ public class AsyncTimeoutAdvisor implements PointcutAdvisor {
 			if (!UAOP.isController(targetClass)) {
 				return false;
 			}
-			//这里可以进行运行前检查
+			// 这里可以进行运行前检查
 			TimeoutLock annotation = TimeoutLockHelper.get(method, targetClass);
 			if (annotation == null) {
 				return false;
 			}
-			//如果在类上发现了RepeatLock,则让给RepeatLock
+			// 如果在类上发现了RepeatLock,则让给RepeatLock
 			if (AnnotationUtils.findAnnotation(method, RepeatLock.class) != null) {
 				return false;
 			}

@@ -41,8 +41,10 @@ public class AsyncConfig extends AsyncConfigurerSupport {
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		executor.initialize();
 		log.info("async executor is already now!");
-		log.info("async config:corePoolSize-{}, maxPoolSize-{}, queueCapacity-{}, keepAliveSeconds-{}, threadNamePrefix-{}", corePoolSize,
-			maxPoolSize, queueCapacity, properties.getKeepAliveSeconds(), properties.getThreadNamePrefix());
+		log.info(
+				"async config:corePoolSize-{}, maxPoolSize-{}, queueCapacity-{}, keepAliveSeconds-{}, threadNamePrefix-{}",
+				corePoolSize,
+				maxPoolSize, queueCapacity, properties.getKeepAliveSeconds(), properties.getThreadNamePrefix());
 		return executor;
 	}
 

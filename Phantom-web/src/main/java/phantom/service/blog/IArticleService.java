@@ -3,7 +3,7 @@ package phantom.service.blog;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.transaction.annotation.Transactional;
-import phantom.aop.validation.annotation.Check;
+
 import phantom.dao.model.result.ArticleDetail;
 import phantom.dao.model.result.ArticleInfo;
 import phantom.dao.model.result.CommentInfo;
@@ -14,6 +14,7 @@ import phantom.dao.param.PostComment;
 import phantom.mvc.data.PageData;
 import phantom.mvc.data.Result.State;
 import phantom.mvc.data.Result.Value;
+import phantom.tool.validate.annotation.Check;
 
 /**
  * 文章服务

@@ -53,11 +53,11 @@ public class MapResultHandler implements CustomHandler {
 			Object value = context.value.transform(map.get("value"));
 			Object object = resultMap.get(key);
 			switch (context.valueType) {
-				case OBJECT : {
+				case OBJECT: {
 					resultMap.put(key, value);
 					break;
 				}
-				case SET : {
+				case SET: {
 					if (object != null) {
 						Set<Object> values = (Set<Object>) object;
 						values.add(value);
@@ -68,7 +68,7 @@ public class MapResultHandler implements CustomHandler {
 					}
 					break;
 				}
-				case LIST : {
+				case LIST: {
 					if (object != null) {
 						List<Object> values = (List<Object>) object;
 						values.add(value);
@@ -138,7 +138,8 @@ public class MapResultHandler implements CustomHandler {
 	}
 
 	private void error(ResolvedType resolvedType) {
-		throw new IllegalArgumentException("不支持把" + resolvedType.getBriefDescription() + "转换为Map<K, Set<V>>,Map<K, List<V>>或者Map<K, V>!");
+		throw new IllegalArgumentException(
+				"不支持把" + resolvedType.getBriefDescription() + "转换为Map<K, Set<V>>,Map<K, List<V>>或者Map<K, V>!");
 	}
 
 	private class MapResultHandlerContext implements CustomHandlerContext {

@@ -34,7 +34,9 @@ public class URegex {
 		if (flag == 0) {
 			return match(regex, input);
 		}
-		return CACHE.computeIfAbsent(UString.concat(regex, ":", Integer.toString(flag)), i -> Pattern.compile(regex, flag)).matcher(input).matches();
+		return CACHE
+				.computeIfAbsent(UString.concat(regex, ":", Integer.toString(flag)), i -> Pattern.compile(regex, flag))
+				.matcher(input).matches();
 	}
 
 	/**

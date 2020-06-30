@@ -49,8 +49,9 @@ public class DefaultEndPointPlugin implements OperationBuilderPlugin {
 
 	private boolean useCustomerizedPluggins = false;
 
-	private String okMessage = String.join(" | ", Stream.of(ResultEnum.values()).filter((iter) -> iter.status == HttpStatus.OK).map((
-		iter) -> iter.desc + ",自定义状态码:" + iter.val).collect(Collectors.toList()));
+	private String okMessage = String.join(" | ",
+			Stream.of(ResultEnum.values()).filter((iter) -> iter.status == HttpStatus.OK).map((
+					iter) -> iter.desc + ",自定义状态码:" + iter.val).collect(Collectors.toList()));
 
 	@Autowired
 	public DefaultEndPointPlugin(DescriptionResolver descriptions, SwaggerProperties properties) {
@@ -80,7 +81,7 @@ public class DefaultEndPointPlugin implements OperationBuilderPlugin {
 		builder.tags(Set.of(info.controllerName));
 		UReflect.set(OperationBuilder.class, "consumes", builder, Set.of(info.consumes));
 		UReflect.set(OperationBuilder.class, "produces", builder, Set.of(info.produces));
-		//修改成功返回值的描述
+		// 修改成功返回值的描述
 		ResponseMessageBuilder messageBuilder = new ResponseMessageBuilder();
 		messageBuilder.code(HttpStatus.OK.value());
 		messageBuilder.message(okMessage);
@@ -93,35 +94,35 @@ public class DefaultEndPointPlugin implements OperationBuilderPlugin {
 		EndPointInfo info = new EndPointInfo();
 		info.controllerName = resolveApiName(context);
 		boolean isRestEndPoint = isRestEndPoint(context);
-		GetMapping getMapping = context.findAnnotation(GetMapping.class).orNull();
+		GetMapping getMapping = context.findAnnotation(GetMapping.class).orElse(null);
 		if (getMapping != null) {
 			info.name = getMapping.name();
 			info.consumes = getMapping.consumes();
 			info.produces = resolveJsonInfo(isRestEndPoint, getMapping.produces());
 			return info;
 		}
-		PostMapping postMapping = context.findAnnotation(PostMapping.class).orNull();
+		PostMapping postMapping = context.findAnnotation(PostMapping.class).orElse(null);
 		if (postMapping != null) {
 			info.name = postMapping.name();
 			info.consumes = postMapping.consumes();
 			info.produces = resolveJsonInfo(isRestEndPoint, postMapping.produces());
 			return info;
 		}
-		DeleteMapping deleteMapping = context.findAnnotation(DeleteMapping.class).orNull();
+		DeleteMapping deleteMapping = context.findAnnotation(DeleteMapping.class).orElse(null);
 		if (deleteMapping != null) {
 			info.name = deleteMapping.name();
 			info.consumes = deleteMapping.consumes();
 			info.produces = resolveJsonInfo(isRestEndPoint, deleteMapping.produces());
 			return info;
 		}
-		PutMapping putMapping = context.findAnnotation(PutMapping.class).orNull();
+		PutMapping putMapping = context.findAnnotation(PutMapping.class).orElse(null);
 		if (putMapping != null) {
 			info.name = putMapping.name();
 			info.consumes = putMapping.consumes();
 			info.produces = resolveJsonInfo(isRestEndPoint, putMapping.produces());
 			return info;
 		}
-		RequestMapping requestMapping = context.findAnnotation(RequestMapping.class).orNull();
+		RequestMapping requestMapping = context.findAnnotation(RequestMapping.class).orElse(null);
 		if (requestMapping != null) {
 			info.name = requestMapping.name();
 			info.consumes = requestMapping.consumes();
@@ -132,27 +133,27 @@ public class DefaultEndPointPlugin implements OperationBuilderPlugin {
 	}
 
 	private String resolveApiName(OperationContext context) {
-		Api api = context.findControllerAnnotation(Api.class).orNull();
+		Api api = context.findControllerAnnotation(Api.class).orElse(null);
 		if (api != null) {
 			return api.tags()[0];
 		}
-		GetMapping getMapping = context.findControllerAnnotation(GetMapping.class).orNull();
+		GetMapping getMapping = context.findControllerAnnotation(GetMapping.class).orElse(null);
 		if (getMapping != null) {
 			return getMapping.name();
 		}
-		PostMapping postMapping = context.findControllerAnnotation(PostMapping.class).orNull();
+		PostMapping postMapping = context.findControllerAnnotation(PostMapping.class).orElse(null);
 		if (postMapping != null) {
 			return postMapping.name();
 		}
-		DeleteMapping deleteMapping = context.findControllerAnnotation(DeleteMapping.class).orNull();
+		DeleteMapping deleteMapping = context.findControllerAnnotation(DeleteMapping.class).orElse(null);
 		if (deleteMapping != null) {
 			return deleteMapping.name();
 		}
-		PutMapping putMapping = context.findControllerAnnotation(PutMapping.class).orNull();
+		PutMapping putMapping = context.findControllerAnnotation(PutMapping.class).orElse(null);
 		if (putMapping != null) {
 			return putMapping.name();
 		}
-		RequestMapping requestMapping = context.findControllerAnnotation(RequestMapping.class).orNull();
+		RequestMapping requestMapping = context.findControllerAnnotation(RequestMapping.class).orElse(null);
 		if (requestMapping != null) {
 			return requestMapping.name();
 		}

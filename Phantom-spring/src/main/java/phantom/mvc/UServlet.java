@@ -91,7 +91,8 @@ public class UServlet {
 		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		@Cleanup PrintWriter out = response.getWriter();
+		@Cleanup
+		PrintWriter out = response.getWriter();
 		out.append(json);
 		out.flush();
 	}
@@ -110,7 +111,8 @@ public class UServlet {
 		response.setStatus(result.httpStatus().value());
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		@Cleanup PrintWriter out = response.getWriter();
+		@Cleanup
+		PrintWriter out = response.getWriter();
 		out.append(result.json());
 		out.flush();
 	}
@@ -131,7 +133,8 @@ public class UServlet {
 		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.TEXT_PLAIN_VALUE);
-		@Cleanup PrintWriter out = response.getWriter();
+		@Cleanup
+		PrintWriter out = response.getWriter();
 		out.append(text);
 		out.flush();
 	}
@@ -152,7 +155,8 @@ public class UServlet {
 		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.TEXT_HTML_VALUE);
-		@Cleanup PrintWriter out = response.getWriter();
+		@Cleanup
+		PrintWriter out = response.getWriter();
 		out.append(html);
 		out.flush();
 	}

@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import phantom.aop.validation.annotation.Mapping;
 import phantom.constant.SortType;
 import phantom.mvc.data.QueryPage;
+import phantom.tool.validate.annotation.Mapping;
 
 /**
  * 获取文章信息参数

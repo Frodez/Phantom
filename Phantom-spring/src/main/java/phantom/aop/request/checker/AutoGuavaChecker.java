@@ -17,7 +17,8 @@ public class AutoGuavaChecker implements AutoChecker {
 
 	@Autowired
 	public AutoGuavaChecker(CacheProperties properties) {
-		cache = CacheBuilder.newBuilder().expireAfterAccess(properties.getStandard().getTimeout(), CacheProperties.TIME_UNIT).build();
+		cache = CacheBuilder.newBuilder()
+				.expireAfterAccess(properties.getStandard().getTimeout(), CacheProperties.TIME_UNIT).build();
 	}
 
 	@Override

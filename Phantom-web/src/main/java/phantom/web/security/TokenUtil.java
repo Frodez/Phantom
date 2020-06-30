@@ -129,7 +129,7 @@ public class TokenUtil {
 	 * @param token
 	 */
 	public static Pair<String, UserType> verify(String token) {
-		//前面已经将exp置为合适的过期时间了,这里只需要判断其是否超过当前时间即可.
+		// 前面已经将exp置为合适的过期时间了,这里只需要判断其是否超过当前时间即可.
 		DecodedJWT jwt = expired ? expiredVerifier.verify(token) : verifier.verify(token);
 		String username = jwt.getSubject();
 		String type = jwt.getClaim(authorityClaim).asString();

@@ -11,6 +11,7 @@ import phantom.mybatis.mapper.partial.SelectPartialMapper;
  * 标准自定义mapper方法
  * @author Frodez
  */
-public interface NormalCustomMapper<T> extends IdsMapper<T>, EqualMapper<T>, InMapper<T>, SelectPartialMapper, CountMapper, ExistMapper {
+public interface NormalCustomMapper<T>
+		extends IdsMapper<T>, EqualMapper<T>, InMapper<T>, SelectPartialMapper, CountMapper, ExistMapper {
 
 }

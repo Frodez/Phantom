@@ -57,8 +57,9 @@ public class JSON {
 		OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
 		OBJECT_MAPPER.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
-		DEFAULT_MAP_READER = OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructParametricType(DEFAULT_MAP_CLASS, String.class,
-			Object.class));
+		DEFAULT_MAP_READER = OBJECT_MAPPER
+				.readerFor(OBJECT_MAPPER.getTypeFactory().constructParametricType(DEFAULT_MAP_CLASS, String.class,
+						Object.class));
 	}
 
 	/**
@@ -96,11 +97,13 @@ public class JSON {
 	@SneakyThrows
 	public static ObjectReader reader(Class<?> parametrized, Class<?>... genericClasses) {
 		if (UEmpty.yes(genericClasses)) {
-			return singleClassReaderCache.computeIfAbsent(parametrized, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
-				parametrized)));
+			return singleClassReaderCache.computeIfAbsent(parametrized,
+					(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
+							parametrized)));
 		} else {
-			return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-				.getTypeFactory().constructParametricType(parametrized, genericClasses)));
+			return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses),
+					(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+							.getTypeFactory().constructParametricType(parametrized, genericClasses)));
 		}
 	}
 
@@ -128,8 +131,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <K, V> Map<K, V> map(InputStream stream, Class<K> k, Class<V> v) {
-		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_MAP_CLASS, k, v), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-			.getTypeFactory().constructParametricType(DEFAULT_MAP_CLASS, k, v))).readValue(stream);
+		return multiClassReaderCache
+				.computeIfAbsent(new MultiTypeKey(DEFAULT_MAP_CLASS, k, v), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+						.getTypeFactory().constructParametricType(DEFAULT_MAP_CLASS, k, v)))
+				.readValue(stream);
 	}
 
 	/**
@@ -138,8 +143,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <K, V> Map<K, V> map(String json, Class<K> k, Class<V> v) {
-		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_MAP_CLASS, k, v), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-			.getTypeFactory().constructParametricType(DEFAULT_MAP_CLASS, k, v))).readValue(json);
+		return multiClassReaderCache
+				.computeIfAbsent(new MultiTypeKey(DEFAULT_MAP_CLASS, k, v), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+						.getTypeFactory().constructParametricType(DEFAULT_MAP_CLASS, k, v)))
+				.readValue(json);
 	}
 
 	/**
@@ -148,8 +155,11 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> List<T> list(InputStream stream, Class<T> klass) {
-		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_LIST_CLASS, klass), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-			.getTypeFactory().constructParametricType(DEFAULT_LIST_CLASS, klass))).readValue(stream);
+		return multiClassReaderCache
+				.computeIfAbsent(new MultiTypeKey(DEFAULT_LIST_CLASS, klass),
+						(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+								.getTypeFactory().constructParametricType(DEFAULT_LIST_CLASS, klass)))
+				.readValue(stream);
 	}
 
 	/**
@@ -158,8 +168,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> List<T> list(String json, Class<T> klass) {
-		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_LIST_CLASS, klass), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-			.getTypeFactory().constructParametricType(DEFAULT_LIST_CLASS, klass))).readValue(json);
+		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_LIST_CLASS, klass),
+				(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+						.getTypeFactory().constructParametricType(DEFAULT_LIST_CLASS, klass)))
+				.readValue(json);
 	}
 
 	/**
@@ -168,8 +180,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> Set<T> set(InputStream stream, Class<T> klass) {
-		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_SET_CLASS, klass), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-			.getTypeFactory().constructParametricType(DEFAULT_SET_CLASS, klass))).readValue(stream);
+		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_SET_CLASS, klass),
+				(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+						.getTypeFactory().constructParametricType(DEFAULT_SET_CLASS, klass)))
+				.readValue(stream);
 	}
 
 	/**
@@ -178,8 +192,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> Set<T> set(String json, Class<T> klass) {
-		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_SET_CLASS, klass), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-			.getTypeFactory().constructParametricType(DEFAULT_SET_CLASS, klass))).readValue(json);
+		return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(DEFAULT_SET_CLASS, klass),
+				(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+						.getTypeFactory().constructParametricType(DEFAULT_SET_CLASS, klass)))
+				.readValue(json);
 	}
 
 	/**
@@ -188,8 +204,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> T as(InputStream stream, Class<T> klass) {
-		return singleClassReaderCache.computeIfAbsent(klass, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(klass)))
-			.readValue(stream);
+		return singleClassReaderCache
+				.computeIfAbsent(klass,
+						(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(klass)))
+				.readValue(stream);
 	}
 
 	/**
@@ -198,8 +216,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> T as(String json, Class<T> klass) {
-		return singleClassReaderCache.computeIfAbsent(klass, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(klass)))
-			.readValue(json);
+		return singleClassReaderCache
+				.computeIfAbsent(klass,
+						(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(klass)))
+				.readValue(json);
 	}
 
 	/**
@@ -208,8 +228,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> T as(InputStream stream, Type type) {
-		return singleTypeReaderCache.computeIfAbsent(type, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(type)))
-			.readValue(stream);
+		return singleTypeReaderCache
+				.computeIfAbsent(type,
+						(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(type)))
+				.readValue(stream);
 	}
 
 	/**
@@ -218,8 +240,10 @@ public class JSON {
 	 */
 	@SneakyThrows
 	public static <T> T as(String json, Type type) {
-		return singleTypeReaderCache.computeIfAbsent(type, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(type)))
-			.readValue(json);
+		return singleTypeReaderCache
+				.computeIfAbsent(type,
+						(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(type)))
+				.readValue(json);
 	}
 
 	/**
@@ -231,11 +255,16 @@ public class JSON {
 	@SneakyThrows
 	public static <T> T as(InputStream stream, Class<T> parametrized, Class<?>... genericClasses) {
 		if (UEmpty.yes(genericClasses)) {
-			return singleClassReaderCache.computeIfAbsent(parametrized, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
-				parametrized))).readValue(stream);
+			return singleClassReaderCache.computeIfAbsent(parametrized,
+					(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
+							parametrized)))
+					.readValue(stream);
 		} else {
-			return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-				.getTypeFactory().constructParametricType(parametrized, genericClasses))).readValue(stream);
+			return multiClassReaderCache
+					.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses),
+							(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+									.getTypeFactory().constructParametricType(parametrized, genericClasses)))
+					.readValue(stream);
 		}
 	}
 
@@ -248,11 +277,16 @@ public class JSON {
 	@SneakyThrows
 	public static <T> T as(String json, Class<T> parametrized, Class<?>... genericClasses) {
 		if (UEmpty.yes(genericClasses)) {
-			return singleClassReaderCache.computeIfAbsent(parametrized, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
-				parametrized))).readValue(json);
+			return singleClassReaderCache.computeIfAbsent(parametrized,
+					(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
+							parametrized)))
+					.readValue(json);
 		} else {
-			return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-				.getTypeFactory().constructParametricType(parametrized, genericClasses))).readValue(json);
+			return multiClassReaderCache
+					.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses),
+							(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+									.getTypeFactory().constructParametricType(parametrized, genericClasses)))
+					.readValue(json);
 		}
 	}
 
@@ -265,11 +299,16 @@ public class JSON {
 	@SneakyThrows
 	public static Object object(String json, Class<?> parametrized, Class<?>... genericClasses) {
 		if (UEmpty.yes(genericClasses)) {
-			return singleClassReaderCache.computeIfAbsent(parametrized, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
-				parametrized))).readValue(json);
+			return singleClassReaderCache.computeIfAbsent(parametrized,
+					(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
+							parametrized)))
+					.readValue(json);
 		} else {
-			return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-				.getTypeFactory().constructParametricType(parametrized, genericClasses))).readValue(json);
+			return multiClassReaderCache
+					.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses),
+							(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+									.getTypeFactory().constructParametricType(parametrized, genericClasses)))
+					.readValue(json);
 		}
 	}
 
@@ -282,11 +321,16 @@ public class JSON {
 	@SneakyThrows
 	public static Object object(InputStream stream, Class<?> parametrized, Class<?>... genericClasses) {
 		if (UEmpty.yes(genericClasses)) {
-			return singleClassReaderCache.computeIfAbsent(parametrized, (k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
-				parametrized))).readValue(stream);
+			return singleClassReaderCache.computeIfAbsent(parametrized,
+					(k) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER.getTypeFactory().constructType(
+							parametrized)))
+					.readValue(stream);
 		} else {
-			return multiClassReaderCache.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses), (i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
-				.getTypeFactory().constructParametricType(parametrized, genericClasses))).readValue(stream);
+			return multiClassReaderCache
+					.computeIfAbsent(new MultiTypeKey(parametrized, genericClasses),
+							(i) -> OBJECT_MAPPER.readerFor(OBJECT_MAPPER
+									.getTypeFactory().constructParametricType(parametrized, genericClasses)))
+					.readValue(stream);
 		}
 	}
 

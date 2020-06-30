@@ -29,7 +29,8 @@ public interface SelectPartialMapper {
 	 * @param <R>
 	 */
 	@SelectProvider(type = SelectPartialMapperProvider.class, method = "dynamicSQL")
-	<R> List<R> partialEq(@Param("fieldName") String fieldName, @Param("paramName") String paramName, @Param("param") Object param);
+	<R> List<R> partialEq(@Param("fieldName") String fieldName, @Param("paramName") String paramName,
+			@Param("param") Object param);
 
 	/**
 	 * 通过equal条件查询部分内容,只支持一个equal条件,是简单的封装。<br>
@@ -42,7 +43,8 @@ public interface SelectPartialMapper {
 	 * @param <R>
 	 */
 	@SelectProvider(type = SelectPartialMapperProvider.class, method = "dynamicSQL")
-	<R> R partialOneEq(@Param("fieldName") String fieldName, @Param("paramName") String paramName, @Param("param") Object param);
+	<R> R partialOneEq(@Param("fieldName") String fieldName, @Param("paramName") String paramName,
+			@Param("param") Object param);
 
 	/**
 	 * 通过in条件查询部分内容,只支持一个in条件,是简单的封装<br>
@@ -54,7 +56,8 @@ public interface SelectPartialMapper {
 	 * @param <R>
 	 */
 	@SelectProvider(type = SelectPartialMapperProvider.class, method = "dynamicSQL")
-	<R> List<R> partialIn(@Param("fieldName") String fieldName, @Param("paramName") String paramName, @Param("params") List<?> params);
+	<R> List<R> partialIn(@Param("fieldName") String fieldName, @Param("paramName") String paramName,
+			@Param("params") List<?> params);
 
 	/**
 	 * 通过in条件查询部分内容,只支持一个in条件,是简单的封装。<br>
@@ -67,7 +70,8 @@ public interface SelectPartialMapper {
 	 * @param <R>
 	 */
 	@SelectProvider(type = SelectPartialMapperProvider.class, method = "dynamicSQL")
-	<R> R partialOneIn(@Param("fieldName") String fieldName, @Param("paramName") String paramName, @Param("params") List<?> params);
+	<R> R partialOneIn(@Param("fieldName") String fieldName, @Param("paramName") String paramName,
+			@Param("params") List<?> params);
 
 	/**
 	 * 通过id批量查询部分内容<br>

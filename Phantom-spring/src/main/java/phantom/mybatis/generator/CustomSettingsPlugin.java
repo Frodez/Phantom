@@ -100,15 +100,17 @@ public class CustomSettingsPlugin extends PluginAdapter {
 
 	// 不生成setter
 	@Override
-	public boolean modelSetterMethodGenerated(Method method, TopLevelClass klass, IntrospectedColumn column, IntrospectedTable table,
-		ModelClassType modelClassType) {
+	public boolean modelSetterMethodGenerated(Method method, TopLevelClass klass, IntrospectedColumn column,
+			IntrospectedTable table,
+			ModelClassType modelClassType) {
 		return false;
 	}
 
 	// 不生成getter
 	@Override
-	public boolean modelGetterMethodGenerated(Method method, TopLevelClass klass, IntrospectedColumn column, IntrospectedTable table,
-		ModelClassType modelClassType) {
+	public boolean modelGetterMethodGenerated(Method method, TopLevelClass klass, IntrospectedColumn column,
+			IntrospectedTable table,
+			ModelClassType modelClassType) {
 		return false;
 	}
 
@@ -139,17 +141,20 @@ public class CustomSettingsPlugin extends PluginAdapter {
 	}
 
 	@Override
-	public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, Interface i, IntrospectedTable table) {
+	public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, Interface i,
+			IntrospectedTable table) {
 		return false;
 	}
 
 	@Override
-	public boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method, Interface i, IntrospectedTable table) {
+	public boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method, Interface i,
+			IntrospectedTable table) {
 		return false;
 	}
 
 	@Override
-	public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface i, IntrospectedTable table) {
+	public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface i,
+			IntrospectedTable table) {
 		return false;
 	}
 
@@ -214,7 +219,8 @@ public class CustomSettingsPlugin extends PluginAdapter {
 	}
 
 	@Override
-	public boolean providerUpdateByPrimaryKeySelectiveMethodGenerated(Method method, TopLevelClass klass, IntrospectedTable table) {
+	public boolean providerUpdateByPrimaryKeySelectiveMethodGenerated(Method method, TopLevelClass klass,
+			IntrospectedTable table) {
 		return false;
 	}
 

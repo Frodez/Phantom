@@ -8,11 +8,12 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.RestController;
-import phantom.aop.validation.annotation.Check;
+
 import phantom.code.checker.CodeCheckException;
 import phantom.common.UEmpty;
 import phantom.mvc.data.Result.Value;
 import phantom.reflect.UReflect;
+import phantom.tool.validate.annotation.Check;
 
 /**
  * AOP工具类
@@ -54,8 +55,9 @@ public class UAOP {
 		if (!method.isAnnotationPresent(Check.class)) {
 			return false;
 		}
-		throw new CodeCheckException("含有", "@", Check.class.getCanonicalName(), "注解的方法", UReflect.fullName(method), "的返回值类型必须为",
-			ListenableFuture.class.getCanonicalName(), "或者", Value.class.getCanonicalName());
+		throw new CodeCheckException("含有", "@", Check.class.getCanonicalName(), "注解的方法", UReflect.fullName(method),
+				"的返回值类型必须为",
+				ListenableFuture.class.getCanonicalName(), "或者", Value.class.getCanonicalName());
 	}
 
 	/**
@@ -77,8 +79,9 @@ public class UAOP {
 		if (!method.isAnnotationPresent(Check.class)) {
 			return false;
 		}
-		throw new CodeCheckException("含有", "@", Check.class.getCanonicalName(), "注解的方法", UReflect.fullName(method), "的返回值类型必须为",
-			ListenableFuture.class.getCanonicalName(), "或者", Value.class.getCanonicalName());
+		throw new CodeCheckException("含有", "@", Check.class.getCanonicalName(), "注解的方法", UReflect.fullName(method),
+				"的返回值类型必须为",
+				ListenableFuture.class.getCanonicalName(), "或者", Value.class.getCanonicalName());
 	}
 
 	private static boolean isResult(Type type) {

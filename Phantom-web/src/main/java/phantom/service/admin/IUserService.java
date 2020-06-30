@@ -5,13 +5,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.transaction.annotation.Transactional;
-import phantom.aop.validation.annotation.Check;
+
 import phantom.dao.model.result.UserInfo;
 import phantom.dao.param.Identifier;
 import phantom.dao.param.Logout;
 import phantom.dao.param.Register;
 import phantom.mvc.data.Result.State;
 import phantom.mvc.data.Result.Value;
+import phantom.tool.validate.annotation.Check;
 
 @Check
 public interface IUserService {

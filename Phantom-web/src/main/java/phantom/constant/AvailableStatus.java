@@ -4,8 +4,8 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import phantom.annotation.Description;
-import phantom.aop.validation.annotation.Mapping.IMapping;
-import phantom.aop.validation.annotation.Mapping.MappingHelper;
+import phantom.tool.validate.annotation.Mapping.IMapping;
+import phantom.tool.validate.annotation.Mapping.MappingHelper;
 
 /**
  * 可用状态

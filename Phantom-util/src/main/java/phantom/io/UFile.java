@@ -36,8 +36,8 @@ public class UFile {
 
 	static {
 		try {
-			getFile = MethodHandles.lookup().unreflect(Class.forName("org.springframework.util.ResourceUtils").getDeclaredMethod("getFile",
-				String.class));
+			Class<?> klass = Class.forName("org.springframework.util.ResourceUtils");
+			getFile = MethodHandles.lookup().unreflect(klass.getDeclaredMethod("getFile", String.class));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}

@@ -13,7 +13,7 @@ public class EqualMapperProvider extends MapperTemplate {
 
 	public String selectEq(MappedStatement ms) {
 		final Class<?> entityClass = getEntityClass(ms);
-		//将返回值修改为实体类型
+		// 将返回值修改为实体类型
 		setResultType(ms, entityClass);
 		String tableName = tableName(entityClass);
 		StringBuilder sql = new StringBuilder();

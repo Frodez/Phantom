@@ -1,9 +1,10 @@
 package phantom.mvc.swagger.pluggin;
 
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
-import com.google.common.base.Optional;
 import io.swagger.annotations.ApiModelProperty;
 import java.lang.reflect.AnnotatedElement;
+import java.util.Optional;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -65,7 +66,7 @@ public class DefaultRequiredPlugin implements ParameterBuilderPlugin, ModelPrope
 	 * @author Frodez
 	 */
 	private boolean isRequired(ResolvedMethodParameter methodParameter) {
-		//优先判断spring的必填设置,如果spring未设置必填,则判断是否拥有可以为空的注解
+		// 优先判断spring的必填设置,如果spring未设置必填,则判断是否拥有可以为空的注解
 		return requestXXX(methodParameter) ? true : !hasNullableAnnotation(methodParameter);
 	}
 
@@ -74,8 +75,9 @@ public class DefaultRequiredPlugin implements ParameterBuilderPlugin, ModelPrope
 	 * @author Frodez
 	 */
 	private boolean hasNullableAnnotation(ResolvedMethodParameter methodParameter) {
-		return methodParameter.hasParameterAnnotation(Null.class) || methodParameter.hasParameterAnnotation(Nullable.class) || methodParameter
-			.hasParameterAnnotation(Nullable.class);
+		return methodParameter.hasParameterAnnotation(Null.class)
+				|| methodParameter.hasParameterAnnotation(Nullable.class) || methodParameter
+						.hasParameterAnnotation(Nullable.class);
 	}
 
 	/**
@@ -117,7 +119,7 @@ public class DefaultRequiredPlugin implements ParameterBuilderPlugin, ModelPrope
 	}
 
 	private void resolveAnnotatedElement(ModelPropertyContext context) {
-		AnnotatedElement annotated = context.getAnnotatedElement().orNull();
+		AnnotatedElement annotated = context.getAnnotatedElement().orElse(null);
 		if (annotated == null) {
 			return;
 		}
@@ -130,7 +132,7 @@ public class DefaultRequiredPlugin implements ParameterBuilderPlugin, ModelPrope
 		} else {
 			ApiModelProperty annotation = AnnotationUtils.findAnnotation(annotated, ApiModelProperty.class);
 			if (annotation != null && annotation.required()) {
-				//如果ApiModelProperty上强制要求required为true,则为true
+				// 如果ApiModelProperty上强制要求required为true,则为true
 				context.getBuilder().required(true);
 			} else {
 				context.getBuilder().required(false);
@@ -139,7 +141,7 @@ public class DefaultRequiredPlugin implements ParameterBuilderPlugin, ModelPrope
 	}
 
 	private void resolveBeanPropertyDefinition(ModelPropertyContext context) {
-		BeanPropertyDefinition beanPropertyDefinition = context.getBeanPropertyDefinition().orNull();
+		BeanPropertyDefinition beanPropertyDefinition = context.getBeanPropertyDefinition().orElse(null);
 		if (beanPropertyDefinition == null) {
 			return;
 		}

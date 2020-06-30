@@ -36,13 +36,13 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.schema.GenericTypeNamingStrategy;
 import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 /**
  * swagger配置
  * @author Frodez
  */
-@EnableSwagger2
+@EnableSwagger2WebMvc
 @Configuration
 @Profile({ "dev", "test" })
 public class SwaggerConfig {
@@ -99,13 +99,13 @@ public class SwaggerConfig {
 	 * @author Frodez
 	 */
 	private void typeConfig(Docket docket) {
-		//将模型重定向
+		// 将模型重定向
 		docket.directModelSubstitute(LocalDate.class, Long.class);
 		docket.directModelSubstitute(LocalDateTime.class, Long.class);
 		docket.directModelSubstitute(LocalTime.class, Long.class);
 		docket.directModelSubstitute(Date.class, Long.class);
 		TypeResolver resolver = new TypeResolver();
-		//有扫描包之外的模型,则在此配置
+		// 有扫描包之外的模型,则在此配置
 		docket.additionalModels(resolver.resolve(QueryPage.class));
 		docket.additionalModels(resolver.resolve(PageData.class));
 		docket.additionalModels(resolver.resolve(State.class));
@@ -166,11 +166,8 @@ public class SwaggerConfig {
 		Map<HttpStatus, List<Result.ResultEnum>> map = new HashMap<>();
 		for (Result.ResultEnum item : Result.ResultEnum.values()) {
 			/*
-			if (item.status == HttpStatus.OK) {
-				//成功的返回信息不设置默认
-				continue;
-			}
-			*/
+			 * if (item.status == HttpStatus.OK) { //成功的返回信息不设置默认 continue; }
+			 */
 			if (map.containsKey(item.status)) {
 				map.get(item.status).add(item);
 			} else {
@@ -180,8 +177,9 @@ public class SwaggerConfig {
 			}
 		}
 		for (Entry<HttpStatus, List<Result.ResultEnum>> entry : map.entrySet()) {
-			String message = String.join(" | ", entry.getValue().stream().map((iter) -> iter.desc + ",自定义状态码:" + iter.val).collect(Collectors
-				.toList()));
+			String message = String.join(" | ",
+					entry.getValue().stream().map((iter) -> iter.desc + ",自定义状态码:" + iter.val).collect(Collectors
+							.toList()));
 			ResponseMessageBuilder messageBuilder = new ResponseMessageBuilder();
 			messageBuilder.code(entry.getKey().value());
 			messageBuilder.message(message);

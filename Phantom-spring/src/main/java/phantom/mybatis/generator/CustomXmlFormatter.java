@@ -39,8 +39,10 @@ public class CustomXmlFormatter implements XmlFormatter {
 
 		private static String generaterContent(Document document) {
 			return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>".concat(lineSeparator).concat(
-				"<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"https://mybatis.org/dtd/mybatis-3-mapper.dtd\">").concat(
-					lineSeparator).concat(getFormattedContent(document.getRootElement(), 0));
+					"<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"https://mybatis.org/dtd/mybatis-3-mapper.dtd\">")
+					.concat(
+							lineSeparator)
+					.concat(getFormattedContent(document.getRootElement(), 0));
 		}
 
 		private static String getFormattedContent(XmlElement element, int indentLevel) {

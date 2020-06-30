@@ -8,10 +8,11 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.Valid;
-import phantom.aop.validation.annotation.Check;
+
 import phantom.code.annotation.Checkable;
 import phantom.code.checker.CodeCheckException;
 import phantom.reflect.UReflect;
+import phantom.tool.validate.annotation.Check;
 
 /**
  * 检查@Valid注解
@@ -63,12 +64,12 @@ public class ValidRule implements Rule {
 			return;
 		}
 		for (Type actualType : genericType.getActualTypeArguments()) {
-			//如果是直接类型,直接判断
+			// 如果是直接类型,直接判断
 			if (actualType instanceof Class) {
 				assertFieldValid(field);
 				continue;
 			}
-			//如果是泛型类型
+			// 如果是泛型类型
 			if (actualType instanceof ParameterizedType) {
 				checkFieldCollectionOrMap(field, (ParameterizedType) actualType);
 				continue;
@@ -78,8 +79,9 @@ public class ValidRule implements Rule {
 
 	private void assertParameterValid(Method method, Parameter parameter) {
 		if (parameter.getAnnotation(Checkable.class) != null && parameter.getAnnotation(Valid.class) == null) {
-			throw new CodeCheckException("含有", Util.classText(Check.class), "的方法", UReflect.fullName(method), "的参数", parameter.getName(), "必须使用",
-				Util.classText(Valid.class));
+			throw new CodeCheckException("含有", Util.classText(Check.class), "的方法", UReflect.fullName(method), "的参数",
+					parameter.getName(), "必须使用",
+					Util.classText(Valid.class));
 		}
 	}
 
@@ -88,12 +90,12 @@ public class ValidRule implements Rule {
 			return;
 		}
 		for (Type actualType : genericType.getActualTypeArguments()) {
-			//如果是直接类型,直接判断
+			// 如果是直接类型,直接判断
 			if (actualType instanceof Class) {
 				assertParameterValid(method, parameter);
 				continue;
 			}
-			//如果是泛型类型
+			// 如果是泛型类型
 			if (actualType instanceof ParameterizedType) {
 				checkParameterCollectionOrMap(method, parameter, (ParameterizedType) actualType);
 				continue;

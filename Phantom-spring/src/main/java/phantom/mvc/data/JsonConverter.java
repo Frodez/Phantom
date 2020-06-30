@@ -60,7 +60,8 @@ public class JsonConverter extends AbstractGenericHttpMessageConverter<Object> {
 		if (cacheResult != null) {
 			return cacheResult;
 		}
-		JavaType javaType = JSON.mapper().getTypeFactory().constructType(GenericTypeResolver.resolveType(type, contextClass));
+		JavaType javaType = JSON.mapper().getTypeFactory()
+				.constructType(GenericTypeResolver.resolveType(type, contextClass));
 		AtomicReference<Throwable> causeRef = new AtomicReference<>();
 		cacheResult = JSON.mapper().canDeserialize(javaType, causeRef);
 		logWarningIfNecessary(javaType, causeRef.get());
@@ -85,21 +86,26 @@ public class JsonConverter extends AbstractGenericHttpMessageConverter<Object> {
 	}
 
 	/**
-	 * Determine whether to log the given exception coming from a {@link ObjectMapper#canDeserialize} /
-	 * {@link ObjectMapper#canSerialize} check.
+	 * Determine whether to log the given exception coming from a
+	 * {@link ObjectMapper#canDeserialize} / {@link ObjectMapper#canSerialize}
+	 * check.
 	 * @param type the class that Jackson tested for (de-)serializability
-	 * @param cause the Jackson-thrown exception to evaluate (typically a {@link JsonMappingException})
+	 * @param cause the Jackson-thrown exception to evaluate (typically a
+	 *            {@link JsonMappingException})
 	 * @since 4.3
 	 */
 	private void logWarningIfNecessary(Type type, @Nullable Throwable cause) {
 		if (cause == null) {
 			return;
 		}
-		// Do not log warning for serializer not found (note: different message wording on Jackson 2.9)
+		// Do not log warning for serializer not found (note: different message wording
+		// on Jackson 2.9)
 		boolean debugLevel = cause instanceof JsonMappingException && cause.getMessage().startsWith("Cannot find");
 		if (debugLevel ? logger.isDebugEnabled() : logger.isWarnEnabled()) {
-			String msg = UString.concat("Failed to evaluate Jackson ", type instanceof JavaType ? "de" : "", "serialization for type [", type
-				.toString(), "]");
+			String msg = UString.concat("Failed to evaluate Jackson ", type instanceof JavaType ? "de" : "",
+					"serialization for type [", type
+							.toString(),
+					"]");
 			if (debugLevel) {
 				logger.debug(msg, cause);
 			} else if (logger.isDebugEnabled()) {
@@ -111,27 +117,31 @@ public class JsonConverter extends AbstractGenericHttpMessageConverter<Object> {
 	}
 
 	@Override
-	protected Object readInternal(Class<?> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+	protected Object readInternal(Class<?> clazz, HttpInputMessage inputMessage)
+			throws IOException, HttpMessageNotReadableException {
 		return JSON.as(inputMessage.getBody(), clazz);
 	}
 
 	@Override
 	public Object read(Type type, @Nullable Class<?> contextClass, HttpInputMessage inputMessage) throws IOException,
-		HttpMessageNotReadableException {
+			HttpMessageNotReadableException {
 		return JSON.as(inputMessage.getBody(), GenericTypeResolver.resolveType(type, contextClass));
 	}
 
 	@Override
-	protected void writeInternal(Object object, @Nullable Type type, HttpOutputMessage outputMessage) throws IOException,
-		HttpMessageNotWritableException {
+	protected void writeInternal(Object object, @Nullable Type type, HttpOutputMessage outputMessage)
+			throws IOException,
+			HttpMessageNotWritableException {
 		try {
 			OutputStream outputStream = outputMessage.getBody();
 			JSON.writer(object).writeValue(outputStream, object);
 			outputStream.flush();
 		} catch (InvalidDefinitionException ex) {
-			throw new HttpMessageConversionException(UString.concat("Type definition error: ", ex.getType().toString()), ex);
+			throw new HttpMessageConversionException(UString.concat("Type definition error: ", ex.getType().toString()),
+					ex);
 		} catch (JsonProcessingException ex) {
-			throw new HttpMessageNotWritableException(UString.concat("Could not write JSON: ", ex.getOriginalMessage()), ex);
+			throw new HttpMessageNotWritableException(UString.concat("Could not write JSON: ", ex.getOriginalMessage()),
+					ex);
 		}
 	}
 

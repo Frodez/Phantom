@@ -1,4 +1,4 @@
-package phantom.aop.validation.annotation;
+package phantom.tool.validate.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -38,7 +38,7 @@ import phantom.tool.validate.Validate;
  * &#64;AnyExists({ &#64;AnyExist({ "a", "b" }), &#64;AnyExist({ "c", "d", "e" }), &#64;AnyExist({ "d", "e" }) })
  * </pre>
  *
- * @see phantom.aop.validation.annotation.AnyExists
+ * @see phantom.tool.validate.annotation.AnyExists
  * @author Frodez
  */
 @Documented
@@ -87,7 +87,8 @@ public @interface AnyExist {
 					fields[i] = klass.getDeclaredField(fieldName);
 				}
 				result.fields = fields;
-				result.errorMessage = UString.concat(klass.getSimpleName(), "的", String.join(", ", fieldNames), "字段需要至少有一个不为null");
+				result.errorMessage = UString.concat(klass.getSimpleName(), "的", String.join(", ", fieldNames),
+						"字段需要至少有一个不为null");
 			}
 			return result;
 		}

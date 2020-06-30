@@ -13,7 +13,7 @@ public class InMapperProvider extends MapperTemplate {
 
 	public String selectIn(MappedStatement ms) {
 		final Class<?> entityClass = getEntityClass(ms);
-		//将返回值修改为实体类型
+		// 将返回值修改为实体类型
 		setResultType(ms, entityClass);
 		String tableName = tableName(entityClass);
 		StringBuilder sql = new StringBuilder();
@@ -22,7 +22,8 @@ public class InMapperProvider extends MapperTemplate {
 		sql.append(" where ");
 		sql.append(tableName).append(".${paramName}");
 		sql.append(" in ");
-		sql.append("<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+		sql.append(
+				"<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 		sql.append(" #{item} ");
 		sql.append("</foreach>");
 		return sql.toString();
@@ -40,7 +41,8 @@ public class InMapperProvider extends MapperTemplate {
 		sql.append(" where ");
 		sql.append(tableName).append(".${paramName}");
 		sql.append(" in ");
-		sql.append("<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+		sql.append(
+				"<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 		sql.append(" #{item} ");
 		sql.append("</foreach>");
 		return sql.toString();
@@ -55,7 +57,8 @@ public class InMapperProvider extends MapperTemplate {
 		sql.append(" where ");
 		sql.append(tableName).append(".${paramName}");
 		sql.append(" in ");
-		sql.append("<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+		sql.append(
+				"<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 		sql.append(" #{item} ");
 		sql.append("</foreach>");
 		return sql.toString();
@@ -70,7 +73,8 @@ public class InMapperProvider extends MapperTemplate {
 		sql.append(" where ");
 		sql.append(tableName).append(".${paramName}");
 		sql.append(" in ");
-		sql.append("<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+		sql.append(
+				"<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 		sql.append(" #{item} ");
 		sql.append("</foreach>");
 		return sql.toString();

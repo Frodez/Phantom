@@ -38,8 +38,9 @@ public class SecurityProperties {
 		/**
 		 * 允许http headers
 		 */
-		private List<String> allowedHeaders = Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Accept-Encoding",
-			"Accept-Language", "Host", "Referer", "Connection", "User-Agent", "Authorization");
+		private List<String> allowedHeaders = Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept",
+				"Accept-Encoding",
+				"Accept-Language", "Host", "Referer", "Connection", "User-Agent", "Authorization");
 
 		/**
 		 * 允许http methods

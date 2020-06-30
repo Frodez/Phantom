@@ -31,9 +31,9 @@ public class UserService implements IUserService {
 
 	@Override
 	public State register(Register param) {
-		//注册流程:
-		//1.为密码加密
-		//2.保存信息
+		// 注册流程:
+		// 1.为密码加密
+		// 2.保存信息
 		if (userMapper.existEq("name", param.getIdentifier().getUsername())) {
 			return Result.fail("用户名已注册");
 		}
@@ -52,11 +52,11 @@ public class UserService implements IUserService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Value<String> login(Identifier param) {
-		//登录流程:
-		//1.获取用户信息,没有信息返回用户名或密码错误
-		//2.对比密码,失败则返回用户名或密码错误
-		//3.查找缓存中是否存在原有token,存在则删除
-		//4.生成token,放入缓存,并返回token
+		// 登录流程:
+		// 1.获取用户信息,没有信息返回用户名或密码错误
+		// 2.对比密码,失败则返回用户名或密码错误
+		// 3.查找缓存中是否存在原有token,存在则删除
+		// 4.生成token,放入缓存,并返回token
 		User user = userMapper.selectOneEq("name", param.getUsername());
 		if (user == null || AvailableStatus.NO.getVal().equals(user.getStatus())) {
 			return Result.fail("用户名或密码错误");
@@ -76,10 +76,10 @@ public class UserService implements IUserService {
 
 	@Override
 	public State logout(Logout param) {
-		//登出流程:
-		//1.获取token,没有token则返回用户名或密码错误
-		//2.对比用户名和密码,失败则返回用户名或密码错误
-		//3.删除缓存中token
+		// 登出流程:
+		// 1.获取token,没有token则返回用户名或密码错误
+		// 2.对比用户名和密码,失败则返回用户名或密码错误
+		// 3.删除缓存中token
 		if (!tokenCache.exist(param.getIdentifier().getUsername(), param.getToken())) {
 			return Result.fail("用户名或密码错误");
 		}

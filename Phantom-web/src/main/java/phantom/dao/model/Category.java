@@ -12,8 +12,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import phantom.aop.validation.annotation.Mapping;
+
 import phantom.constant.AvailableStatus;
+import phantom.tool.validate.annotation.Mapping;
 
 /**
  * @description 分类表

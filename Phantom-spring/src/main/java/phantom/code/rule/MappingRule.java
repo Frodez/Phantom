@@ -5,13 +5,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashSet;
 import java.util.Set;
-import phantom.aop.validation.annotation.Mapping;
-import phantom.aop.validation.annotation.Mapping.MappingHelper;
+
 import phantom.code.checker.CodeCheckException;
+import phantom.tool.validate.annotation.Mapping;
+import phantom.tool.validate.annotation.Mapping.MappingHelper;
 
 /**
  * 检查@Mapping注解
- * @see phantom.aop.validation.annotation.Mapping
+ * @see phantom.tool.validate.annotation.Mapping
  * @author Frodez
  */
 public class MappingRule implements Rule {

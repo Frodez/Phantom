@@ -3,27 +3,28 @@
 <mapper namespace="phantom.dao.mapper.TagMapper">
 
 	<select id="selectTags" resultType="java.util.HashMap">
-	SELECT
-		tb_tag.article_id AS `key`, 
-		tb_tag.tag AS `value` 
-	FROM
-		tb_tag 
-	WHERE
-		tb_tag.`status` = 1 
-	AND tb_tag.article_id IN 
-	<foreach collection="articleIds" item="item" index="index" open="(" close=")" separator=",">
-		#{item}
-	</foreach>
+		SELECT
+		tb_tag.article_id AS `key`,
+		tb_tag.tag AS `value`
+		FROM
+		tb_tag
+		WHERE
+		tb_tag.`status` = 1
+		AND tb_tag.article_id IN
+		<foreach collection="articleIds" item="item" index="index"
+			open="(" close=")" separator=",">
+			#{item}
+		</foreach>
 	</select>
-    
-    <select id="selectTagsById" resultType="java.lang.String">
-    SELECT
+
+	<select id="selectTagsById" resultType="java.lang.String">
+		SELECT
 		tb_tag.tag AS tag
-	FROM
-		tb_tag 
-	WHERE
-		tb_tag.`status` = 1 
-	AND tb_tag.article_id = #{articleId}
-    </select>
-    
+		FROM
+		tb_tag
+		WHERE
+		tb_tag.`status` = 1
+		AND tb_tag.article_id = #{articleId}
+	</select>
+
 </mapper>

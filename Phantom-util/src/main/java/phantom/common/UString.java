@@ -69,7 +69,7 @@ public class UString {
 		}
 		int size = 0;
 		for (int i = 0; i < strings.length; i++) {
-			//如果字符串数组某处为null,会自动抛出异常
+			// 如果字符串数组某处为null,会自动抛出异常
 			size = size + strings[i].length();
 		}
 		StringBuilder builder = new StringBuilder(size);
@@ -100,7 +100,7 @@ public class UString {
 		}
 		int size = 0;
 		for (String string : strings) {
-			//如果字符串数组某处为null,会自动抛出异常
+			// 如果字符串数组某处为null,会自动抛出异常
 			size = size + string.length();
 		}
 		StringBuilder builder = new StringBuilder(size);
@@ -212,23 +212,23 @@ public class UString {
 		StringBuilder builder = new StringBuilder(string.length());
 		int from = builder.indexOf(delimiter);
 		if (from < 0) {
-			//未找到分隔符,直接将原字符串首字母小写。
+			// 未找到分隔符,直接将原字符串首字母小写。
 			lower(builder, string, 0);
 			return builder.toString();
 		}
 		lower(builder, string, 0, from);
 		int skip = delimiter.length();
-		//上个分隔符的结束处
+		// 上个分隔符的结束处
 		from = from + skip;
 		while (true) {
-			//下个分隔符的起始处
+			// 下个分隔符的起始处
 			int next = string.indexOf(delimiter, from);
 			if (next < 0) {
-				//如果未找到下个分隔符
+				// 如果未找到下个分隔符
 				upper(builder, string, from);
 				break;
 			} else {
-				//如果找到了
+				// 如果找到了
 				upper(builder, string, from, next);
 				from = next + skip;
 			}
@@ -243,28 +243,28 @@ public class UString {
 	public static String[] split(String delimiter, String string) {
 		int from = string.indexOf(delimiter);
 		if (from < 0) {
-			//未找到
+			// 未找到
 			return new String[] { string };
 		}
-		//如果找到,则分割
+		// 如果找到,则分割
 		int skip = delimiter.length();
-		//可能的长度
+		// 可能的长度
 		StringArray array = new StringArray(string.length() / (skip << 2));
-		//加入第一段
+		// 加入第一段
 		array.append(string.substring(0, from));
-		//上个分隔符的结束处
+		// 上个分隔符的结束处
 		from = from + skip;
 		while (true) {
-			//下个分隔符的起始处
+			// 下个分隔符的起始处
 			int next = string.indexOf(delimiter, from);
 			if (next < 0) {
-				//如果未找到下个分隔符
+				// 如果未找到下个分隔符
 				if (from != string.length()) {
 					array.append(string.substring(from));
 				}
 				break;
 			} else {
-				//说明两个分隔符之间有字符
+				// 说明两个分隔符之间有字符
 				if (next != from) {
 					array.append(string.substring(from, next));
 				}
@@ -280,7 +280,7 @@ public class UString {
 	 */
 	private static class StringArray {
 
-		//设置一个稍小的值,毕竟用不到那么多
+		// 设置一个稍小的值,毕竟用不到那么多
 		private static final int MAX_ARRAY_SIZE = 65536;
 
 		/**

@@ -30,8 +30,9 @@ public class HttpStatusAdvice implements ResponseBodyAdvice<Value<?>> {
 	 * @author Frodez
 	 */
 	@Override
-	public Value<?> beforeBodyWrite(Value<?> body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<
-		?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+	public Value<?> beforeBodyWrite(Value<?> body, MethodParameter returnType, MediaType selectedContentType,
+			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
+			ServerHttpResponse response) {
 		response.setStatusCode(body.httpStatus());
 		return body;
 	}

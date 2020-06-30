@@ -1,4 +1,4 @@
-package phantom.aop.validation.annotation;
+package phantom.tool.validate.annotation;
 
 import com.fasterxml.classmate.ResolvedType;
 import com.google.common.collect.ImmutableMap;
@@ -32,9 +32,11 @@ import phantom.tool.validate.Validate;
  * 枚举类型映射注解 <br>
  * <strong>对枚举的要求:<br>
  * 1.枚举必须继承IMapping&lt;V&gt;接口。类型参数V指定了可以映射到枚举上的类型。详情见IMapping接口。<br>
- * 2.枚举必须实现一个public static Enum of(V value)方法。V的类型为基本类型时,可以为对应装箱类,反之亦然;其他类型时必须严格对应。<br>
+ * 2.枚举必须实现一个public static Enum of(V
+ * value)方法。V的类型为基本类型时,可以为对应装箱类,反之亦然;其他类型时必须严格对应。<br>
  * 3.方法名由MappingHelper.VALIDATE_METHOD指定。该方法必须在映射成功时返回对应枚举,失败时返回null。<br>
- * 4.枚举应拥有一个public static final V defaultValue字段。字段用于指定默认值。如果字段值为null或者无该字段,默认值被指定为null。<br>
+ * 4.枚举应拥有一个public static final V
+ * defaultValue字段。字段用于指定默认值。如果字段值为null或者无该字段,默认值被指定为null。<br>
  * 5.该字段名由MappingHelper.DEFAULT_VALUE_FIELD指定,类型同IMapping的类型参数V。<br>
  * </strong><br>
  * 注解使用范例:<br>
@@ -47,8 +49,8 @@ import phantom.tool.validate.Validate;
  * type: Class类型,代表对应的枚举类.<br>
  * <strong>将枚举类型同相应映射类型的对象进行映射,并可以验证正确性。<br>
  * 对枚举类型相应的映射类型的参数用本注解标注,可以自动生成swagger文档。作用类似于@ApiParam。</strong><br>
- * @see phantom.aop.validation.annotation.Mapping.IMapping
- * @see phantom.aop.validation.annotation.Mapping.MappingHelper
+ * @see phantom.tool.validate.annotation.Mapping.IMapping
+ * @see phantom.tool.validate.annotation.Mapping.MappingHelper
  * @author Frodez
  */
 @Documented
@@ -244,12 +246,14 @@ public @interface Mapping {
 			if (description != null) {
 				info.name = description.name();
 			}
-			//解析类型
-			ResolvedType imappingType = Stream.of(klass.getGenericInterfaces()).map((type) -> UType.resolve(type)).filter((type) -> {
-				return type.getErasedType() == IMapping.class;
-			}).findAny().orElseThrow(() -> new RuntimeException("该枚举未继承" + IMapping.class.getCanonicalName() + "接口"));
+			// 解析类型
+			ResolvedType imappingType = Stream.of(klass.getGenericInterfaces()).map((type) -> UType.resolve(type))
+					.filter((type) -> {
+						return type.getErasedType() == IMapping.class;
+					}).findAny()
+					.orElseThrow(() -> new RuntimeException("该枚举未继承" + IMapping.class.getCanonicalName() + "接口"));
 			Class<?> valueType = imappingType.getTypeParameters().get(0).getErasedType();
-			//info.method
+			// info.method
 			Method validateMethod = Stream.of(klass.getDeclaredMethods()).filter((method) -> {
 				if (!VALIDATE_METHOD.equals(method.getName())) {
 					return false;
@@ -264,10 +268,11 @@ public @interface Mapping {
 				if (parameters.length != 1) {
 					return false;
 				}
-				return UType.isBoxType(valueType) ? UType.isSameBoxType(valueType, parameters[0]) : valueType == parameters[0];
+				return UType.isBoxType(valueType) ? UType.isSameBoxType(valueType, parameters[0])
+						: valueType == parameters[0];
 			}).findAny().orElseThrow(() -> new IllegalArgumentException("未找到符合要求的验证方法!"));
 			info.method = UReflect.LOOKUP.unreflect(validateMethod);
-			//info.defaultValue
+			// info.defaultValue
 			try {
 				Object defaultValue = UReflect.get(klass, DEFAULT_VALUE_FIELD, null);
 				if (defaultValue != null && defaultValue.getClass() != valueType) {
@@ -280,13 +285,14 @@ public @interface Mapping {
 					info.defaultValue = null;
 				}
 			}
-			//info.enums
+			// info.enums
 			Method method = klass.getDeclaredMethod("values");
 			IMapping<?>[] enums = (IMapping<?>[]) UReflect.LOOKUP.unreflect(method).invoke();
 			info.enums = Arrays.asList(enums);
-			//info.errorMessage
-			String introduction = String.join(", ", Stream.of(enums).map((item) -> UString.concat(item.getVal().toString(), ":", item.getDesc()))
-				.collect(Collectors.toList()));
+			// info.errorMessage
+			String introduction = String.join(", ",
+					Stream.of(enums).map((item) -> UString.concat(item.getVal().toString(), ":", item.getDesc()))
+							.collect(Collectors.toList()));
 			if (info.defaultValue == null) {
 				info.errorMessage = UString.concat("有效值为", introduction);
 			} else {
@@ -344,7 +350,7 @@ public @interface Mapping {
 		@SneakyThrows
 		public boolean isValid(Object value, ConstraintValidatorContext context) {
 			if (value == null) {
-				//对于非空检查的情况,请继续使用@NotNull注解
+				// 对于非空检查的情况,请继续使用@NotNull注解
 				return true;
 			}
 			MappingHelper.MappingInfo info = MappingHelper.get(klass);

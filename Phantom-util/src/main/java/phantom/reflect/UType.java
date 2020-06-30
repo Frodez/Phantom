@@ -117,10 +117,13 @@ public class UType {
 	 * @author Frodez
 	 */
 	public static boolean isBoxType(Class<?> klass) {
-		return klass == byte.class || klass == Byte.class || klass == int.class || klass == Integer.class || klass == boolean.class
-			|| klass == Boolean.class || klass == long.class || klass == Long.class || klass == double.class || klass == Double.class
-			|| klass == char.class || klass == Character.class || klass == float.class || klass == Float.class || klass == short.class
-			|| klass == Short.class;
+		return klass == byte.class || klass == Byte.class || klass == int.class || klass == Integer.class
+				|| klass == boolean.class
+				|| klass == Boolean.class || klass == long.class || klass == Long.class || klass == double.class
+				|| klass == Double.class
+				|| klass == char.class || klass == Character.class || klass == float.class || klass == Float.class
+				|| klass == short.class
+				|| klass == Short.class;
 	}
 
 	/**

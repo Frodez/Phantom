@@ -1,10 +1,13 @@
 /*
  * Circular Object Buffer Copyright (C) 2002-2004 Stephen Ostermiller
- * http://ostermiller.org/contact.pl?regarding=Java+Utilities This program is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation;
- * either version 2 of the License, or (at your option) any later version. This program is distributed in the hope that
- * it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE. See the GNU General Public License for more details. See COPYING.TXT for details.
+ * http://ostermiller.org/contact.pl?regarding=Java+Utilities This program is
+ * free software; you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation;
+ * either version 2 of the License, or (at your option) any later version. This
+ * program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * See COPYING.TXT for details.
  */
 package phantom.io;
 
@@ -25,13 +28,15 @@ import java.io.IOException;
  * System.out.print((String) (buffer.read()));
  * </pre>
  *
- * Implements the Circular Buffer producer/consumer model for Objects. More information about this class is available
- * from <a target="_top" href= "http://ostermiller.org/utils/CircularObjectBuffer.html">ostermiller.org</a>.
+ * Implements the Circular Buffer producer/consumer model for Objects. More
+ * information about this class is available from <a target="_top" href=
+ * "http://ostermiller.org/utils/CircularObjectBuffer.html">ostermiller.org</a>.
  * <p>
  * This class is thread safe.
  * @see CircularCharBuffer
  * @see CircularByteBuffer
- * @author Stephen Ostermiller http://ostermiller.org/contact.pl?regarding=Java+Utilities
+ * @author Stephen Ostermiller
+ *         http://ostermiller.org/contact.pl?regarding=Java+Utilities
  * @param <ElementType> Type of object allowed in this circular buffer
  * @since ostermillerutils 1.00.00
  */
@@ -52,14 +57,16 @@ public class CircularObjectBuffer<ElementType> {
 	/**
 	 * The circular buffer.
 	 * <p>
-	 * The actual capacity of the buffer is one less than the actual length of the buffer so that an empty and a full
-	 * buffer can be distinguished. An empty buffer will have the readPostion and the writePosition equal to each other.
-	 * A full buffer will have the writePosition one less than the readPostion.
+	 * The actual capacity of the buffer is one less than the actual length of the
+	 * buffer so that an empty and a full buffer can be distinguished. An empty
+	 * buffer will have the readPostion and the writePosition equal to each other. A
+	 * full buffer will have the writePosition one less than the readPostion.
 	 * <p>
-	 * There are two important indexes into the buffer: The readPosition, and the writePosition. The Objects available
-	 * to be read go from the readPosition to the writePosition, wrapping around the end of the buffer. The space
-	 * available for writing goes from the write position to one less than the readPosition, wrapping around the end of
-	 * the buffer.
+	 * There are two important indexes into the buffer: The readPosition, and the
+	 * writePosition. The Objects available to be read go from the readPosition to
+	 * the writePosition, wrapping around the end of the buffer. The space available
+	 * for writing goes from the write position to one less than the readPosition,
+	 * wrapping around the end of the buffer.
 	 * @since ostermillerutils 1.00.00
 	 */
 	protected ElementType[] buffer;
@@ -83,22 +90,24 @@ public class CircularObjectBuffer<ElementType> {
 	protected volatile boolean infinite = false;
 
 	/**
-	 * True if a write to a full buffer should block until the buffer has room, false if the write method should throw
-	 * an IOException
+	 * True if a write to a full buffer should block until the buffer has room,
+	 * false if the write method should throw an IOException
 	 * @since ostermillerutils 1.00.00
 	 */
 	protected boolean blockingWrite = true;
 
 	/**
-	 * True when no more input is coming into this buffer. At that point reading from the buffer may return null if the
-	 * buffer is empty, otherwise a read will block until an Object is available.
+	 * True when no more input is coming into this buffer. At that point reading
+	 * from the buffer may return null if the buffer is empty, otherwise a read will
+	 * block until an Object is available.
 	 * @since ostermillerutils 1.00.00
 	 */
 	protected boolean inputDone = false;
 
 	/**
-	 * Make this buffer ready for reuse. The contents of the buffer will be cleared and the streams associated with this
-	 * buffer will be reopened if they had been closed.
+	 * Make this buffer ready for reuse. The contents of the buffer will be cleared
+	 * and the streams associated with this buffer will be reopened if they had been
+	 * closed.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public void clear() {
@@ -112,8 +121,9 @@ public class CircularObjectBuffer<ElementType> {
 	/**
 	 * Get number of Objects that are available to be read.
 	 * <p>
-	 * Note that the number of Objects available plus the number of Objects free may not add up to the capacity of this
-	 * buffer, as the buffer may reserve some space for other purposes.
+	 * Note that the number of Objects available plus the number of Objects free may
+	 * not add up to the capacity of this buffer, as the buffer may reserve some
+	 * space for other purposes.
 	 * @return the size in Objects of this buffer
 	 * @since ostermillerutils 1.00.00
 	 */
@@ -126,8 +136,9 @@ public class CircularObjectBuffer<ElementType> {
 	/**
 	 * Get the number of Objects this buffer has free for writing.
 	 * <p>
-	 * Note that the number of Objects available plus the number of Objects free may not add up to the capacity of this
-	 * buffer, as the buffer may reserve some space for other purposes.
+	 * Note that the number of Objects available plus the number of Objects free may
+	 * not add up to the capacity of this buffer, as the buffer may reserve some
+	 * space for other purposes.
 	 * @return the available space in Objects of this buffer
 	 * @since ostermillerutils 1.00.00
 	 */
@@ -140,8 +151,9 @@ public class CircularObjectBuffer<ElementType> {
 	/**
 	 * Get the capacity of this buffer.
 	 * <p>
-	 * Note that the number of Objects available plus the number of Objects free may not add up to the capacity of this
-	 * buffer, as the buffer may reserve some space for other purposes.
+	 * Note that the number of Objects available plus the number of Objects free may
+	 * not add up to the capacity of this buffer, as the buffer may reserve some
+	 * space for other purposes.
 	 * @return the size in Objects of this buffer
 	 * @since ostermillerutils 1.00.00
 	 */
@@ -202,7 +214,7 @@ public class CircularObjectBuffer<ElementType> {
 	private int available() {
 		if (readPosition <= writePosition) {
 			// any space between the first read and
-			// the first write is available.  In this case i
+			// the first write is available. In this case i
 			// is all in one piece.
 			return writePosition - readPosition;
 		}
@@ -211,8 +223,8 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Create a new buffer with a default capacity. Writing to a full buffer will block until space is available rather
-	 * than throw an exception.
+	 * Create a new buffer with a default capacity. Writing to a full buffer will
+	 * block until space is available rather than throw an exception.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public CircularObjectBuffer() {
@@ -220,15 +232,16 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Create a new buffer with given capacity. Writing to a full buffer will block until space is available rather than
-	 * throw an exception.
+	 * Create a new buffer with given capacity. Writing to a full buffer will block
+	 * until space is available rather than throw an exception.
 	 * <p>
-	 * Note that the buffer may reserve some Objects for special purposes and capacity number of Objects may not be able
-	 * to be written to the buffer.
+	 * Note that the buffer may reserve some Objects for special purposes and
+	 * capacity number of Objects may not be able to be written to the buffer.
 	 * <p>
-	 * Note that if the buffer is of INFINITE_SIZE it will neither block or throw exceptions, but rather grow without
-	 * bound.
-	 * @param size desired capacity of the buffer in Objects or CircularObjectBuffer.INFINITE_SIZE.
+	 * Note that if the buffer is of INFINITE_SIZE it will neither block or throw
+	 * exceptions, but rather grow without bound.
+	 * @param size desired capacity of the buffer in Objects or
+	 *            CircularObjectBuffer.INFINITE_SIZE.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public CircularObjectBuffer(int size) {
@@ -237,8 +250,8 @@ public class CircularObjectBuffer<ElementType> {
 
 	/**
 	 * Create a new buffer with a default capacity and given blocking behavior.
-	 * @param blockingWrite true writing to a full buffer should block until space is available, false if an exception
-	 *        should be thrown instead.
+	 * @param blockingWrite true writing to a full buffer should block until space
+	 *            is available, false if an exception should be thrown instead.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public CircularObjectBuffer(boolean blockingWrite) {
@@ -248,14 +261,15 @@ public class CircularObjectBuffer<ElementType> {
 	/**
 	 * Create a new buffer with the given capacity and blocking behavior.
 	 * <p>
-	 * Note that the buffer may reserve some Objects for special purposes and capacity number of Objects may not be able
-	 * to be written to the buffer.
+	 * Note that the buffer may reserve some Objects for special purposes and
+	 * capacity number of Objects may not be able to be written to the buffer.
 	 * <p>
-	 * Note that if the buffer is of INFINITE_SIZE it will neither block or throw exceptions, but rather grow without
-	 * bound.
-	 * @param size desired capacity of the buffer in Objects or CircularObjectBuffer.INFINITE_SIZE.
-	 * @param blockingWrite true writing to a full buffer should block until space is available, false if an exception
-	 *        should be thrown instead.
+	 * Note that if the buffer is of INFINITE_SIZE it will neither block or throw
+	 * exceptions, but rather grow without bound.
+	 * @param size desired capacity of the buffer in Objects or
+	 *            CircularObjectBuffer.INFINITE_SIZE.
+	 * @param blockingWrite true writing to a full buffer should block until space
+	 *            is available, false if an exception should be thrown instead.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public CircularObjectBuffer(int size, boolean blockingWrite) {
@@ -270,8 +284,9 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Get a single Object from this buffer. This method should be called by the consumer. This method will block until
-	 * a Object is available or no more objects are available.
+	 * Get a single Object from this buffer. This method should be called by the
+	 * consumer. This method will block until a Object is available or no more
+	 * objects are available.
 	 * @return The Object read, or null if there are no more objects
 	 * @throws InterruptedException if the thread is interrupted while waiting.
 	 * @since ostermillerutils 1.00.00
@@ -296,10 +311,12 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Get Objects into an array from this buffer. This method should be called by the consumer. This method will block
-	 * until some input is available, or there is no more input.
+	 * Get Objects into an array from this buffer. This method should be called by
+	 * the consumer. This method will block until some input is available, or there
+	 * is no more input.
 	 * @param buf Destination buffer.
-	 * @return The number of Objects read, or -1 there will be no more objects available.
+	 * @return The number of Objects read, or -1 there will be no more objects
+	 *         available.
 	 * @throws InterruptedException if the thread is interrupted while waiting.
 	 * @since ostermillerutils 1.00.00
 	 */
@@ -308,12 +325,14 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Get Objects into a portion of an array from this buffer. This method should be called by the consumer. This
-	 * method will block until some input is available, an I/O error occurs, or the end of the stream is reached.
+	 * Get Objects into a portion of an array from this buffer. This method should
+	 * be called by the consumer. This method will block until some input is
+	 * available, an I/O error occurs, or the end of the stream is reached.
 	 * @param buf Destination buffer.
 	 * @param off Offset at which to start storing Objects.
 	 * @param len Maximum number of Objects to read.
-	 * @return The number of Objects read, or -1 there will be no more objects available.
+	 * @return The number of Objects read, or -1 there will be no more objects
+	 *         available.
 	 * @throws InterruptedException if the thread is interrupted while waiting.
 	 * @since ostermillerutils 1.00.00
 	 */
@@ -345,8 +364,9 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Skip Objects. This method should be used by the consumer when it does not care to examine some number of Objects.
-	 * This method will block until some Objects are available, or there will be no more Objects available.
+	 * Skip Objects. This method should be used by the consumer when it does not
+	 * care to examine some number of Objects. This method will block until some
+	 * Objects are available, or there will be no more Objects available.
 	 * @param n The number of Objects to skip
 	 * @return The number of Objects actually skipped
 	 * @throws IllegalArgumentException if n is negative.
@@ -379,11 +399,13 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * This method should be used by the producer to signal to the consumer that the producer is done producing objects
-	 * and that the consumer should stop asking for objects once it has used up buffered objects.
+	 * This method should be used by the producer to signal to the consumer that the
+	 * producer is done producing objects and that the consumer should stop asking
+	 * for objects once it has used up buffered objects.
 	 * <p>
-	 * Once the producer has signaled that it is done, further write() invocations will cause an IllegalStateException
-	 * to be thrown. Calling done() multiple times, however, has no effect.
+	 * Once the producer has signaled that it is done, further write() invocations
+	 * will cause an IllegalStateException to be thrown. Calling done() multiple
+	 * times, however, has no effect.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public void done() {
@@ -393,12 +415,13 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Fill this buffer with array of Objects. This method should be called by the producer. If the buffer allows
-	 * blocking writes, this method will block until all the data has been written rather than throw a
-	 * BufferOverflowException.
+	 * Fill this buffer with array of Objects. This method should be called by the
+	 * producer. If the buffer allows blocking writes, this method will block until
+	 * all the data has been written rather than throw a BufferOverflowException.
 	 * @param buf Array of Objects to be written
-	 * @throws IOException if buffer does not allow blocking writes and the buffer is full. If the exception is thrown,
-	 *         no data will have been written since the buffer was set to be non-blocking.
+	 * @throws IOException if buffer does not allow blocking writes and the buffer
+	 *             is full. If the exception is thrown, no data will have been
+	 *             written since the buffer was set to be non-blocking.
 	 * @throws IllegalStateException if done() has been called.
 	 * @throws InterruptedException if the write is interrupted.
 	 * @since ostermillerutils 1.00.00
@@ -408,25 +431,27 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Fill this buffer with a portion of an array of Objects. This method should be called by the producer. If the
-	 * buffer allows blocking writes, this method will block until all the data has been written rather than throw an
+	 * Fill this buffer with a portion of an array of Objects. This method should be
+	 * called by the producer. If the buffer allows blocking writes, this method
+	 * will block until all the data has been written rather than throw an
 	 * IOException.
 	 * @param buf Array of Objects
 	 * @param off Offset from which to start writing Objects
 	 * @param len - Number of Objects to write
-	 * @throws IOException if buffer does not allow blocking writes and the buffer is full. If the exception is thrown,
-	 *         no data will have been written since the buffer was set to be non-blocking.
+	 * @throws IOException if buffer does not allow blocking writes and the buffer
+	 *             is full. If the exception is thrown, no data will have been
+	 *             written since the buffer was set to be non-blocking.
 	 * @throws IllegalStateException if done() has been called.
 	 * @throws InterruptedException if the write is interrupted.
 	 * @since ostermillerutils 1.00.00
 	 */
 	public void write(ElementType[] buf, int off, int len) throws IOException, IllegalStateException,
-		InterruptedException {
+			InterruptedException {
 		while (len > 0) {
 			synchronized (CircularObjectBuffer.this) {
 				if (inputDone) {
 					throw new IllegalStateException(
-						"CircularObjectBuffer.done() has been called, CircularObjectBuffer.write() failed.");
+							"CircularObjectBuffer.done() has been called, CircularObjectBuffer.write() failed.");
 				}
 				int spaceLeft = spaceLeft();
 				while (infinite && spaceLeft < len) {
@@ -462,11 +487,13 @@ public class CircularObjectBuffer<ElementType> {
 	}
 
 	/**
-	 * Add a single Object to this buffer. This method should be called by the producer. If the buffer allows blocking
-	 * writes, this method will block until all the data has been written rather than throw an IOException.
+	 * Add a single Object to this buffer. This method should be called by the
+	 * producer. If the buffer allows blocking writes, this method will block until
+	 * all the data has been written rather than throw an IOException.
 	 * @param o Object to be written.
-	 * @throws IOException if buffer does not allow blocking writes and the buffer is full. If the exception is thrown,
-	 *         no data will have been written since the buffer was set to be non-blocking.
+	 * @throws IOException if buffer does not allow blocking writes and the buffer
+	 *             is full. If the exception is thrown, no data will have been
+	 *             written since the buffer was set to be non-blocking.
 	 * @throws IllegalStateException if done() has been called.
 	 * @throws InterruptedException if the write is interrupted.
 	 * @since ostermillerutils 1.00.00
@@ -477,7 +504,7 @@ public class CircularObjectBuffer<ElementType> {
 			synchronized (CircularObjectBuffer.this) {
 				if (inputDone) {
 					throw new IllegalStateException(
-						"CircularObjectBuffer.done() has been called, CircularObjectBuffer.write() failed.");
+							"CircularObjectBuffer.done() has been called, CircularObjectBuffer.write() failed.");
 				}
 				int spaceLeft = spaceLeft();
 				while (infinite && spaceLeft < 1) {

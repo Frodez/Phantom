@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -57,7 +56,8 @@ public class ArticleService implements IArticleService {
 		Page<ArticleInfo> page = param.getPage().page(() -> articleMapper.selectArticleInfo(param));
 		List<ArticleInfo> result = page.getResult();
 		if (UEmpty.no(result)) {
-			Map<Long, List<String>> tagMap = tagMapper.selectTags(result.stream().map(ArticleInfo::getId).collect(Collectors.toList()));
+			Map<Long, List<String>> tagMap = tagMapper
+					.selectTags(result.stream().map(ArticleInfo::getId).collect(Collectors.toList()));
 			for (ArticleInfo info : result) {
 				info.setTags(tagMap.get(info.getId()));
 			}
@@ -67,7 +67,7 @@ public class ArticleService implements IArticleService {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Value<ArticleDetail> getArticle(@NotNull Long articleId) {
+	public Value<ArticleDetail> getArticle(Long articleId) {
 		ArticleDetail article = articleMapper.selectArticleDetail(articleId);
 		if (article == null) {
 			return Result.fail("该文章不存在");

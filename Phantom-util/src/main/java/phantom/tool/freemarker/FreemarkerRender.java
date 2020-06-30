@@ -41,12 +41,15 @@ public class FreemarkerRender {
 			Class<?> resourceLoaderClass = Class.forName("org.springframework.core.io.DefaultResourceLoader");
 			Object resourceLoader = resourceLoaderClass.getConstructor().newInstance();
 			try {
-				Object resource = resourceLoaderClass.getMethod("getResource", String.class).invoke(resourceLoader, loaderPath);
-				File file = (File) Class.forName("org.springframework.core.io.Resource").getMethod("getFile").invoke(resource);
+				Object resource = resourceLoaderClass.getMethod("getResource", String.class).invoke(resourceLoader,
+						loaderPath);
+				File file = (File) Class.forName("org.springframework.core.io.Resource").getMethod("getFile")
+						.invoke(resource);
 				return new FileTemplateLoader(file);
 			} catch (Exception e) {
 				Class<?> templateLoaderClass = Class.forName("org.springframework.ui.freemarker.SpringTemplateLoader");
-				Object loader = templateLoaderClass.getConstructor(resourceLoaderClass, String.class).newInstance(resourceLoader, loaderPath);
+				Object loader = templateLoaderClass.getConstructor(resourceLoaderClass, String.class)
+						.newInstance(resourceLoader, loaderPath);
 				return (TemplateLoader) loader;
 			}
 		} catch (Exception e) {
@@ -69,14 +72,6 @@ public class FreemarkerRender {
 	 */
 	public static Configuration configuration() {
 		return configuration;
-	}
-
-	/**
-	 * 渲染页面,并转变为String(默认内联css)
-	 * @author Frodez
-	 */
-	public static String render(String templateName) {
-		return render(templateName, new HashMap<>(), RenderMode.CSSREVERTER);
 	}
 
 	/**

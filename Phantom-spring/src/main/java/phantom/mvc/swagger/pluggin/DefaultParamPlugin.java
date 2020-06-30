@@ -27,12 +27,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import phantom.aop.validation.annotation.Mapping;
-import phantom.aop.validation.annotation.Mapping.IMapping;
-import phantom.aop.validation.annotation.Mapping.MappingHelper;
+
 import phantom.common.UString;
 import phantom.configuration.SwaggerProperties;
 import phantom.reflect.UType;
+import phantom.tool.validate.annotation.Mapping;
+import phantom.tool.validate.annotation.Mapping.IMapping;
+import phantom.tool.validate.annotation.Mapping.MappingHelper;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.schema.Example;
 import springfox.documentation.service.AllowableListValues;
@@ -63,7 +64,8 @@ public class DefaultParamPlugin implements ParameterBuilderPlugin {
 	private boolean useCustomerizedPluggins = false;
 
 	@Autowired
-	public DefaultParamPlugin(DescriptionResolver descriptions, EnumTypeDeterminer enumTypeDeterminer, SwaggerProperties properties) {
+	public DefaultParamPlugin(DescriptionResolver descriptions, EnumTypeDeterminer enumTypeDeterminer,
+			SwaggerProperties properties) {
 		this.descriptions = descriptions;
 		this.useCustomerizedPluggins = properties.getUseCustomerizedPluggins();
 	}
@@ -86,7 +88,7 @@ public class DefaultParamPlugin implements ParameterBuilderPlugin {
 	private void resolveParameterType(ParameterContext context) {
 		ResolvedMethodParameter parameter = context.resolvedMethodParameter();
 		ResolvedType type = context.alternateFor(parameter.getParameterType());
-		//Multi-part file trumps any other annotations
+		// Multi-part file trumps any other annotations
 		if (isFileType(type) || isListOfFiles(type)) {
 			context.parameterBuilder().parameterType("form");
 			return;
@@ -121,7 +123,7 @@ public class DefaultParamPlugin implements ParameterBuilderPlugin {
 		}
 		if (parameter.hasParameterAnnotation(ModelAttribute.class)) {
 			log.warn(UString.concat("@ModelAttribute annotated parameters should have already been expanded via ",
-				"the ExpandedParameterBuilderPlugin"));
+					"the ExpandedParameterBuilderPlugin"));
 		}
 		if (parameter.hasParameterAnnotation(ApiParam.class)) {
 			context.parameterBuilder().parameterType("query");
@@ -147,7 +149,8 @@ public class DefaultParamPlugin implements ParameterBuilderPlugin {
 		Class<?> parameterClass = resolveParamType(resolvedType);
 		if (parameterClass == null) {
 			log.warn(UString.concat(resolvedType.getBriefDescription(), "的类型无法被DefaultParamPlugin解析"));
-			@SuppressWarnings("unused") int a = 1;
+			@SuppressWarnings("unused")
+			int a = 1;
 			return;
 		}
 		ApiModel apiModel = parameterClass.getAnnotation(ApiModel.class);
@@ -157,7 +160,7 @@ public class DefaultParamPlugin implements ParameterBuilderPlugin {
 			}
 			return;
 		}
-		//如果只有一个参数,名字就用param,否则用class的simpleName
+		// 如果只有一个参数,名字就用param,否则用class的simpleName
 		boolean useClassName = context.getOperationContext().getParameters().size() > 1;
 		ParameterBuilder builder = context.parameterBuilder();
 		builder.name(useClassName ? parameterClass.getSimpleName() : "param");
@@ -195,13 +198,15 @@ public class DefaultParamPlugin implements ParameterBuilderPlugin {
 
 	@SneakyThrows
 	private void resolveMapEnum(ParameterContext context) {
-		Mapping enumParam = context.resolvedMethodParameter().findAnnotation(Mapping.class).orNull();
+		Mapping enumParam = context.resolvedMethodParameter().findAnnotation(Mapping.class).orElse(null);
 		if (enumParam != null) {
 			Class<? extends Enum<?>> enumType = enumParam.value();
 			List<IMapping<?>> values = MappingHelper.getEnums(enumType);
 			Object defaultValue = MappingHelper.getDefaultValue(enumType);
-			AllowableListValues allowableListValues = new AllowableListValues(values.stream().map((item) -> item.getVal().toString()).collect(
-				Collectors.toList()), values.get(0).getVal().getClass().getSimpleName());
+			AllowableListValues allowableListValues = new AllowableListValues(
+					values.stream().map((item) -> item.getVal().toString()).collect(
+							Collectors.toList()),
+					values.get(0).getVal().getClass().getSimpleName());
 			ParameterBuilder builder = context.parameterBuilder();
 			builder.description(Util.getDesc(values));
 			builder.scalarExample(new Example(defaultValue == null ? UString.EMPTY : defaultValue.toString()));

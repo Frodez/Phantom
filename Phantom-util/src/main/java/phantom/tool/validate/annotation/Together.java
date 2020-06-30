@@ -1,4 +1,4 @@
-package phantom.aop.validation.annotation;
+package phantom.tool.validate.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -38,7 +38,7 @@ import phantom.tool.validate.Validate;
  * &#64;Together({ &#64;Together({ "a", "b" }), &#64;Together({ "c", "d", "e" }), &#64;Together({ "d", "e" }) })
  * </pre>
  *
- * @see phantom.aop.validation.annotation.Togethers
+ * @see phantom.tool.validate.annotation.Togethers
  * @author Frodez
  */
 @Documented
@@ -67,14 +67,14 @@ public @interface Together {
 	@UtilityClass
 	public static class TogetherHelper {
 
-		private static final Map<AnyExist, TogetherInfo> CACHE = new ConcurrentHashMap<>();
+		private static final Map<Together, TogetherInfo> CACHE = new ConcurrentHashMap<>();
 
-		private TogetherInfo get(Class<?> klass, AnyExist annotation) {
+		private TogetherInfo get(Class<?> klass, Together annotation) {
 			return CACHE.computeIfAbsent(annotation, (key) -> generate(klass, key));
 		}
 
 		@SneakyThrows
-		private static TogetherInfo generate(Class<?> klass, AnyExist annotation) {
+		private static TogetherInfo generate(Class<?> klass, Together annotation) {
 			TogetherInfo result = new TogetherInfo();
 			String[] fieldNames = annotation.value();
 			if (UEmpty.yes(fieldNames)) {
@@ -87,7 +87,8 @@ public @interface Together {
 					fields[i] = klass.getDeclaredField(fieldName);
 				}
 				result.fields = fields;
-				result.errorMessage = UString.concat(klass.getSimpleName(), "的", String.join(", ", fieldNames), "字段要么全为null,要么全不为null");
+				result.errorMessage = UString.concat(klass.getSimpleName(), "的", String.join(", ", fieldNames),
+						"字段要么全为null,要么全不为null");
 			}
 			return result;
 		}
@@ -101,12 +102,12 @@ public @interface Together {
 
 	}
 
-	class Validator implements ConstraintValidator<AnyExist, Object> {
+	class Validator implements ConstraintValidator<Together, Object> {
 
-		private AnyExist annotation;
+		private Together annotation;
 
 		@Override
-		public void initialize(AnyExist annotation) {
+		public void initialize(Together annotation) {
 			this.annotation = annotation;
 		}
 
@@ -119,7 +120,7 @@ public @interface Together {
 			TogetherHelper.TogetherInfo info = TogetherHelper.get(value.getClass(), annotation);
 			int nullCount = 0;
 			for (int i = 0; i < info.fields.length;) {
-				Field field = info.fields[i++];//警告:这里同时也做了i=i+1
+				Field field = info.fields[i++];// 警告:这里同时也做了i=i+1
 				if (UReflect.get(field, value) == null) {
 					nullCount++;
 				}

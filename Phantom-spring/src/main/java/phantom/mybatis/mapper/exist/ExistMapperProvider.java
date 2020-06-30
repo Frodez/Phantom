@@ -32,11 +32,13 @@ public class ExistMapperProvider extends MapperTemplate {
 			sql.append(" where ");
 			sql.append(column.getColumn());
 			sql.append(" in ");
-			sql.append("<foreach collection=\"ids\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+			sql.append(
+					"<foreach collection=\"ids\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 			sql.append(" #{item} ");
 			sql.append("</foreach>");
 		} else {
-			throw new MapperException("继承 selectByIds 方法的实体类[" + entityClass.getCanonicalName() + "]中必须有且只有一个带有 @Id 注解的字段");
+			throw new MapperException(
+					"继承 selectByIds 方法的实体类[" + entityClass.getCanonicalName() + "]中必须有且只有一个带有 @Id 注解的字段");
 		}
 		return sql.toString();
 	}
@@ -77,7 +79,8 @@ public class ExistMapperProvider extends MapperTemplate {
 		sql.append(" where ");
 		sql.append(tableName).append(".${paramName}");
 		sql.append(" in ");
-		sql.append("<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+		sql.append(
+				"<foreach collection=\"params\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 		sql.append(" #{item} ");
 		sql.append("</foreach>");
 		return sql.toString();

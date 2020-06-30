@@ -22,11 +22,11 @@ import phantom.reflect.UReflect;
 public @interface Limit {
 
 	/**
-	 * 每秒每token限制请求数,默认值100.0
+	 * 每秒每token限制请求数,默认值1.0
 	 * @author Frodez
 	 */
 	@Positive
-	double value() default 100.0;
+	double value() default 1.0;
 
 	/**
 	 * 超时时间,默认值3000毫秒
@@ -54,6 +54,11 @@ public @interface Limit {
 				throw new CodeCheckException("方法", UReflect.fullName(method), "的超时时间必须大于0!");
 			}
 		}
+
+		public static void main(String[] args) {
+
+		}
+
 	}
 
 }

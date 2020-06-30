@@ -66,23 +66,13 @@ public class Validate {
 	}
 
 	/**
-	 * 对对象进行验证,如果验证通过,返回null<br>
-	 * @param Object 需要验证的对象
+	 * 对对象进行验证,如果验证通过,返回null
+	 * @param Object 需要验证的对象（不能为null）
 	 * @author Frodez
 	 */
 	public static String validate(final Object object) {
-		return validate(object, "object is null");
-	}
-
-	/**
-	 * 对对象进行验证,如果验证通过,返回null
-	 * @param Object 需要验证的对象
-	 * @param nullMessage 验证对象为空时返回的字符串
-	 * @author Frodez
-	 */
-	public static String validate(final Object object, String nullMessage) {
 		if (object == null) {
-			return nullMessage;
+			throw new IllegalArgumentException("object is null");
 		}
 		Set<ConstraintViolation<Object>> set = engine.validate(object);
 		if (set.isEmpty()) {
@@ -92,11 +82,44 @@ public class Validate {
 	}
 
 	/**
+	 * 对方法参数进行验证,如果验证不通过抛出异常<br>
+	 * <strong>用于AOP,因为AOP做出了保证,故无NPE检查。如需要单独使用,请保证参数均非null。</strong>
+	 * @param instance 需要验证的方法所在类实例
+	 * @param method 需要验证的方法
+	 * @param args 方法参数
+	 * @author Frodez
+	 */
+	public static void assertValid(final Object instance, final Method method, final Object[] args) {
+		Set<ConstraintViolation<Object>> set = engine.forExecutables().validateParameters(instance, method, args);
+		if (set.isEmpty()) {
+			return;
+		}
+		throw new IllegalArgumentException(failFast ? getErrorMessage(set.iterator().next()) : getErrorMessage(set));
+	}
+
+	/**
+	 * 对对象进行验证,如果验证不通过抛出异常
+	 * @param Object 需要验证的对象（不能为null）
+	 * @author Frodez
+	 */
+	public static void assertValid(final Object object) {
+		if (object == null) {
+			throw new IllegalArgumentException("object is null");
+		}
+		Set<ConstraintViolation<Object>> set = engine.validate(object);
+		if (set.isEmpty()) {
+			return;
+		}
+		throw new IllegalArgumentException(failFast ? getErrorMessage(set.iterator().next()) : getErrorMessage(set));
+	}
+
+	/**
 	 * 获取格式化的错误信息
 	 * @author Frodez
 	 */
 	private static String getErrorMessage(Set<ConstraintViolation<Object>> violations) {
-		List<String> messages = violations.stream().map(Validate::getErrorMessage).filter((message) -> message != null).collect(Collectors.toList());
+		List<String> messages = violations.stream().map(Validate::getErrorMessage).filter((message) -> message != null)
+				.collect(Collectors.toList());
 		return String.join(";\n", messages);
 	}
 
@@ -125,11 +148,11 @@ public class Validate {
 	 */
 	private static Predicate<Node> isErrorSouce = (node) -> {
 		switch (node.getKind()) {
-			case PROPERTY :
+			case PROPERTY:
 				return true;
-			case CONTAINER_ELEMENT :
+			case CONTAINER_ELEMENT:
 				return true;
-			default :
+			default:
 				return false;
 		}
 	};

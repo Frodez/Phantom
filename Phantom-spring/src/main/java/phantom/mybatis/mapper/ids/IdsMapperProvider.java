@@ -17,7 +17,7 @@ public class IdsMapperProvider extends MapperTemplate {
 
 	public String selectByIds(MappedStatement ms) {
 		final Class<?> entityClass = getEntityClass(ms);
-		//将返回值修改为实体类型
+		// 将返回值修改为实体类型
 		setResultType(ms, entityClass);
 		StringBuilder sql = new StringBuilder();
 		sql.append(SqlHelper.selectAllColumns(entityClass));
@@ -28,11 +28,13 @@ public class IdsMapperProvider extends MapperTemplate {
 			sql.append(" where ");
 			sql.append(column.getColumn());
 			sql.append(" in ");
-			sql.append("<foreach collection=\"ids\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+			sql.append(
+					"<foreach collection=\"ids\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 			sql.append(" #{item} ");
 			sql.append("</foreach>");
 		} else {
-			throw new MapperException("继承 selectByIds 方法的实体类[" + entityClass.getCanonicalName() + "]中必须有且只有一个带有 @Id 注解的字段");
+			throw new MapperException(
+					"继承 selectByIds 方法的实体类[" + entityClass.getCanonicalName() + "]中必须有且只有一个带有 @Id 注解的字段");
 		}
 		return sql.toString();
 	}
@@ -47,11 +49,13 @@ public class IdsMapperProvider extends MapperTemplate {
 			sql.append(" where ");
 			sql.append(column.getColumn());
 			sql.append(" in ");
-			sql.append("<foreach collection=\"ids\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
+			sql.append(
+					"<foreach collection=\"ids\" item=\"item\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 			sql.append(" #{item} ");
 			sql.append("</foreach>");
 		} else {
-			throw new MapperException("继承 deleteByIds 方法的实体类[" + entityClass.getCanonicalName() + "]中必须有且只有一个带有 @Id 注解的字段");
+			throw new MapperException(
+					"继承 deleteByIds 方法的实体类[" + entityClass.getCanonicalName() + "]中必须有且只有一个带有 @Id 注解的字段");
 		}
 		return sql.toString();
 	}

@@ -48,7 +48,7 @@ public class LimitUserAdvisor implements PointcutAdvisor {
 
 		@Override
 		public boolean matches(Method method, Class<?> targetClass, Object... args) {
-			//isRuntime()方法返回值为false时,不会进行运行时判断
+			// isRuntime()方法返回值为false时,不会进行运行时判断
 			return false;
 		}
 
@@ -57,7 +57,7 @@ public class LimitUserAdvisor implements PointcutAdvisor {
 			if (!UAOP.isController(targetClass)) {
 				return false;
 			}
-			//这里可以进行运行前检查
+			// 这里可以进行运行前检查
 			Limit annotation = LimitHelper.get(method, targetClass);
 			if (annotation == null) {
 				return false;

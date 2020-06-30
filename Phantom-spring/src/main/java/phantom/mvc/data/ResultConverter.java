@@ -28,7 +28,8 @@ public class ResultConverter extends AbstractGenericHttpMessageConverter<Value<?
 		setDefaultCharset(StandardCharsets.UTF_8);
 		setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
 		Assert.isTrue(JSON.mapper().canSerialize(Value.class), "Value can't be serialized!");
-		Assert.isTrue(JSON.mapper().canDeserialize(JSON.mapper().getTypeFactory().constructType(Value.class)), "Value can't be deserialized!");
+		Assert.isTrue(JSON.mapper().canDeserialize(JSON.mapper().getTypeFactory().constructType(Value.class)),
+				"Value can't be deserialized!");
 	}
 
 	@Override
@@ -49,22 +50,23 @@ public class ResultConverter extends AbstractGenericHttpMessageConverter<Value<?
 
 	@Override
 	protected Value<?> readInternal(Class<? extends Value<?>> clazz, HttpInputMessage inputMessage) throws IOException,
-		HttpMessageNotReadableException {
+			HttpMessageNotReadableException {
 		return Result.reader().readValue(inputMessage.getBody());
 	}
 
 	@Override
 	public Value<?> read(Type type, @Nullable Class<?> contextClass, HttpInputMessage inputMessage) throws IOException,
-		HttpMessageNotReadableException {
+			HttpMessageNotReadableException {
 		return Result.reader().readValue(inputMessage.getBody());
 	}
 
 	@Override
-	protected void writeInternal(Value<?> object, @Nullable Type type, HttpOutputMessage outputMessage) throws IOException,
-		HttpMessageNotWritableException {
+	protected void writeInternal(Value<?> object, @Nullable Type type, HttpOutputMessage outputMessage)
+			throws IOException,
+			HttpMessageNotWritableException {
 		try {
 			OutputStream outputStream = outputMessage.getBody();
-			//对通用Result采用特殊的优化过的方式
+			// 对通用Result采用特殊的优化过的方式
 			byte[] cacheBytes = object.cache();
 			if (cacheBytes != null) {
 				outputStream.write(cacheBytes);
@@ -73,7 +75,8 @@ public class ResultConverter extends AbstractGenericHttpMessageConverter<Value<?
 			}
 			outputStream.flush();
 		} catch (JsonProcessingException ex) {
-			throw new HttpMessageNotWritableException(UString.concat("Could not write JSON: ", ex.getOriginalMessage()), ex);
+			throw new HttpMessageNotWritableException(UString.concat("Could not write JSON: ", ex.getOriginalMessage()),
+					ex);
 		}
 	}
 

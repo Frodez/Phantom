@@ -163,10 +163,10 @@ public class UReflect {
 		String identifier = UString.concat(klass.getCanonicalName(), ".", fieldName);
 		MethodHandle handle = SETTER_CACHE.get(identifier);
 		if (handle == null) {
-			//首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
+			// 首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
 			Field field = klass.getDeclaredField(fieldName);
 			if (!field.isAccessible()) {
-				//暂时使用isAccessible api,因为可以减少判断次数提高性能
+				// 暂时使用isAccessible api,因为可以减少判断次数提高性能
 				field.trySetAccessible();
 			}
 			handle = LOOKUP.unreflectSetter(field);
@@ -189,9 +189,9 @@ public class UReflect {
 		String identifier = UString.concat(field.getDeclaringClass().getCanonicalName(), ".", field.getName());
 		MethodHandle handle = SETTER_CACHE.get(identifier);
 		if (handle == null) {
-			//首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
+			// 首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
 			if (!field.isAccessible()) {
-				//暂时使用isAccessible api,因为可以减少判断次数提高性能
+				// 暂时使用isAccessible api,因为可以减少判断次数提高性能
 				field.trySetAccessible();
 			}
 			handle = LOOKUP.unreflectGetter(field);
@@ -213,10 +213,10 @@ public class UReflect {
 		String identifier = UString.concat(klass.getCanonicalName(), ".", fieldName);
 		MethodHandle handle = GETTER_CACHE.get(identifier);
 		if (handle == null) {
-			//首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
+			// 首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
 			Field field = klass.getDeclaredField(fieldName);
 			if (!field.isAccessible()) {
-				//暂时使用isAccessible api,因为可以减少判断次数提高性能
+				// 暂时使用isAccessible api,因为可以减少判断次数提高性能
 				field.trySetAccessible();
 			}
 			handle = LOOKUP.unreflectGetter(field);
@@ -235,9 +235,9 @@ public class UReflect {
 		String identifier = UString.concat(field.getDeclaringClass().getCanonicalName(), ".", field.getName());
 		MethodHandle handle = GETTER_CACHE.get(identifier);
 		if (handle == null) {
-			//首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
+			// 首次使用该字段时,一定会走入本判断分支中。只要不将字段可见性重新设置为false，就不会出现错误
 			if (!field.isAccessible()) {
-				//暂时使用isAccessible api,因为可以减少判断次数提高性能
+				// 暂时使用isAccessible api,因为可以减少判断次数提高性能
 				field.trySetAccessible();
 			}
 			handle = LOOKUP.unreflectGetter(field);

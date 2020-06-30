@@ -14,8 +14,9 @@ public class UPrimitive {
 	 * @author Frodez
 	 */
 	public static boolean isBaseType(Class<?> klass) {
-		return klass.isPrimitive() || klass == Boolean.class || klass == Byte.class || klass == Short.class || klass == Character.class
-			|| klass == Integer.class || klass == Long.class || klass == Float.class || klass == Double.class;
+		return klass.isPrimitive() || klass == Boolean.class || klass == Byte.class || klass == Short.class
+				|| klass == Character.class
+				|| klass == Integer.class || klass == Long.class || klass == Float.class || klass == Double.class;
 	}
 
 	/**

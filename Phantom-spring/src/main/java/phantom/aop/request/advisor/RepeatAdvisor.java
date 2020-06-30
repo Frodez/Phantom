@@ -60,7 +60,7 @@ public class RepeatAdvisor implements PointcutAdvisor {
 
 		@Override
 		public boolean matches(Method method, Class<?> targetClass, Object... args) {
-			//isRuntime()方法返回值为false时,不会进行运行时判断
+			// isRuntime()方法返回值为false时,不会进行运行时判断
 			return false;
 		}
 
@@ -73,7 +73,7 @@ public class RepeatAdvisor implements PointcutAdvisor {
 			if (annotation == null) {
 				return false;
 			}
-			//如果在类上发现了TimeoutLock,则让给TimeoutLock
+			// 如果在类上发现了TimeoutLock,则让给TimeoutLock
 			if (AnnotationUtils.findAnnotation(method, TimeoutLock.class) != null) {
 				return false;
 			}

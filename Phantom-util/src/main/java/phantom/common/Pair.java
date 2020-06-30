@@ -58,8 +58,8 @@ public class Pair<F, S> implements Serializable {
 		return collection;
 	}
 
-	public static <C extends Collection<P>, P extends Pair<K, V>, K, V> C transfer(Map<K, V> map, Supplier<C> collectionSupplier, BiFunction<K, V,
-		P> pairSupplier) {
+	public static <C extends Collection<P>, P extends Pair<K, V>, K, V> C transfer(Map<K, V> map,
+			Supplier<C> collectionSupplier, BiFunction<K, V, P> pairSupplier) {
 		C collection = collectionSupplier.get();
 		for (Entry<K, V> entry : map.entrySet()) {
 			collection.add(pairSupplier.apply(entry.getKey(), entry.getValue()));

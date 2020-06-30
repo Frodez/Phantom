@@ -35,14 +35,15 @@ public class CustomHandlerInterceptor implements Interceptor {
 
 	@Override
 	public Object plugin(Object target) {
-		//只拦截Executor对象，减少目标被代理的次数
+		// 只拦截Executor对象，减少目标被代理的次数
 		if (target instanceof Executor) {
-			return Proxy.newProxyInstance(target.getClass().getClassLoader(), interfaces, (InvocationHandler) (proxy, method, args) -> {
-				if (method.getName().equals("query")) {
-					return interceptor.intercept(new Invocation(target, method, args));
-				}
-				return method.invoke(target, args);
-			});
+			return Proxy.newProxyInstance(target.getClass().getClassLoader(), interfaces,
+					(InvocationHandler) (proxy, method, args) -> {
+						if (method.getName().equals("query")) {
+							return interceptor.intercept(new Invocation(target, method, args));
+						}
+						return method.invoke(target, args);
+					});
 		} else {
 			return target;
 		}
@@ -56,7 +57,7 @@ public class CustomHandlerInterceptor implements Interceptor {
 		if (args[3] != null) {
 			return invocation.proceed();
 		}
-		//用自定义handler
+		// 用自定义handler
 		CustomHandler handler = HandlerResolver.resolve(ms, parameter);
 		if (handler == null) {
 			return invocation.proceed();
@@ -90,7 +91,7 @@ public class CustomHandlerInterceptor implements Interceptor {
 		public static CustomHandler resolve(MappedStatement ms, Object parameter) {
 			String id = ms.getId();
 			if (noCustomes.contains(id)) {
-				//如果在未设置的名单里，直接返回
+				// 如果在未设置的名单里，直接返回
 				return null;
 			}
 			Class<? extends CustomHandler> handler = cache.get(id);
@@ -99,15 +100,15 @@ public class CustomHandlerInterceptor implements Interceptor {
 			}
 			Method method = resolveMethod(id, parameter);
 			if (method == null) {
-				//如果未找到method,则纳入未设置的名单，直接返回null
+				// 如果未找到method,则纳入未设置的名单，直接返回null
 				return resolveNo(id);
 			}
-			//优先判断方法，再判断返回值类型
+			// 优先判断方法，再判断返回值类型
 			CustomResultHandler annotation = method.getAnnotation(CustomResultHandler.class);
 			if (annotation != null) {
 				return resolveNew(id, method, ms, annotation);
 			}
-			//如果未找到handler,则纳入未设置的名单，直接返回null
+			// 如果未找到handler,则纳入未设置的名单，直接返回null
 			return resolveNo(id);
 		}
 
@@ -119,7 +120,7 @@ public class CustomHandlerInterceptor implements Interceptor {
 		private static Method resolveMethod(String id, Object parameter) {
 			int index = id.lastIndexOf(".");
 			String className = id.substring(0, index);
-			String methodName = id.substring(index + 1, id.length());//要去掉那个.
+			String methodName = id.substring(index + 1, id.length());// 要去掉那个.
 			Class<?> klass = Class.forName(className);
 			List<Method> matches = new ArrayList<>();
 			for (Method method : klass.getMethods()) {
@@ -143,27 +144,29 @@ public class CustomHandlerInterceptor implements Interceptor {
 		}
 
 		private static CustomHandler resolveExist(String id, Class<? extends CustomHandler> handler) {
-			//每次都必须是一个新对象
+			// 每次都必须是一个新对象
 			CustomHandler instance = UReflect.instance(handler);
-			//设置已有的上下文
+			// 设置已有的上下文
 			instance.setContext(contextCache.get(id));
 			return instance;
 		}
 
-		private static CustomHandler resolveNew(String id, Method method, MappedStatement ms, CustomResultHandler annotation) {
+		private static CustomHandler resolveNew(String id, Method method, MappedStatement ms,
+				CustomResultHandler annotation) {
 			Class<? extends CustomHandler> instanceClass = annotation.value();
-			//每次都必须是一个新对象
+			// 每次都必须是一个新对象
 			CustomHandler instance = UReflect.instance(instanceClass);
 			List<ResultMap> resultMaps = ms.getResultMaps();
 			if (!instance.support(resultMaps)) {
-				//如果不支持
+				// 如果不支持
 				noCustomes.add(id);
-				String string = resultMaps.stream().map((item) -> item.getType().getCanonicalName()).collect(Collectors.joining(","));
+				String string = resultMaps.stream().map((item) -> item.getType().getCanonicalName())
+						.collect(Collectors.joining(","));
 				log.warn("{}方法的返回值类型{}不被{}所支持,将不会使用该CustomHandler", id, string, instanceClass.getCanonicalName());
 				return null;
 			}
 			cache.put(id, instanceClass);
-			//在需要返回结果的情况下,需要记录下返回值类型
+			// 在需要返回结果的情况下,需要记录下返回值类型
 			CustomHandlerContext context = instance.resolveContext(method, ms.getConfiguration());
 			contextCache.put(id, context);
 			instance.setContext(context);

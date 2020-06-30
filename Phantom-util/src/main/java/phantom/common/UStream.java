@@ -35,7 +35,8 @@ public class UStream {
 		if (pageSize <= 0) {
 			throw new IllegalArgumentException("pageSize must be positive");
 		}
-		return pageNum > 1 ? collection.stream().skip((pageNum - 1) * pageSize).limit(pageSize) : collection.stream().limit(pageSize);
+		return pageNum > 1 ? collection.stream().skip((pageNum - 1) * pageSize).limit(pageSize)
+				: collection.stream().limit(pageSize);
 	}
 
 	/**
@@ -258,7 +259,8 @@ public class UStream {
 						V v = e.getValue();
 						V u = ((Map<K, V>) m1).putIfAbsent(k, v);
 						if (u != null) {
-							throw new IllegalStateException(String.format("Duplicate key %s (attempted merging values %s and %s)", k, u, v));
+							throw new IllegalStateException(
+									String.format("Duplicate key %s (attempted merging values %s and %s)", k, u, v));
 						}
 					}
 					return m1;

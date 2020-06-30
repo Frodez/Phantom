@@ -48,7 +48,7 @@ public class WebMvcBaseConfig implements WebMvcConfigurer {
 	 */
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		//清除掉原本的AbstractJackson2HttpMessageConverter。
+		// 清除掉原本的AbstractJackson2HttpMessageConverter。
 		converters.removeIf((iter) -> {
 			return iter instanceof AbstractJackson2HttpMessageConverter;
 		});
@@ -62,7 +62,7 @@ public class WebMvcBaseConfig implements WebMvcConfigurer {
 	 */
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
-		//对字符串进行转义
+		// 对字符串进行转义
 		registry.addConverter(new Converter<String, String>() {
 
 			private final Escaper escaper = HtmlEscapers.htmlEscaper();

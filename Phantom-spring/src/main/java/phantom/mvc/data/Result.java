@@ -666,10 +666,10 @@ public class Result {
 		static final ObjectReader READER;
 
 		static {
-			//ObjectMapper mapper = new ObjectMapper();
-			//mapper.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
-			//WRITER = mapper.writerFor(Value.class);
-			//READER = mapper.readerFor(Value.class);
+			// ObjectMapper mapper = new ObjectMapper();
+			// mapper.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
+			// WRITER = mapper.writerFor(Value.class);
+			// READER = mapper.readerFor(Value.class);
 			WRITER = JSON.mapper().writerFor(Value.class);
 			READER = JSON.mapper().readerFor(Value.class);
 			for (ResultEnum item : ResultEnum.values()) {

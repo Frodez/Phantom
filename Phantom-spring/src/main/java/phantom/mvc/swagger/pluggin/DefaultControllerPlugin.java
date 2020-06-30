@@ -2,8 +2,9 @@ package phantom.mvc.swagger.pluggin;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
-import com.google.common.base.Optional;
 import io.swagger.annotations.Api;
+
+import java.util.Optional;
 import java.util.Set;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -117,7 +118,8 @@ public class DefaultControllerPlugin implements ApiListingBuilderPlugin {
 	}
 
 	private boolean isRestController(Class<?> controller) {
-		return findAnnotation(controller, RestController.class) != null || findAnnotation(controller, ResponseBody.class) != null;
+		return findAnnotation(controller, RestController.class) != null
+				|| findAnnotation(controller, ResponseBody.class) != null;
 	}
 
 	private String[] resolveJsonInfo(boolean isRestController, String[] strings) {

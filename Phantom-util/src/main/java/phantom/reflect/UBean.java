@@ -80,7 +80,8 @@ public class UBean {
 	/**
 	 * 清空目标bean的所有属性,然后copy原对象属性.<br>
 	 * 建议对数据库update时使用本方法，insert时使用copy方法。<br>
-	 * 在使用本方法和使用BeanUtil.initialize(Object, Class)方法的意义相同时,建议使用initialize方法,速度更快。<br>
+	 * 在使用本方法和使用BeanUtil.initialize(Object,
+	 * Class)方法的意义相同时,建议使用initialize方法,速度更快。<br>
 	 * 注意:请不要这样使用本方法:<br>
 	 *
 	 * <pre>
@@ -128,7 +129,7 @@ public class UBean {
 			BeanMap.create(bean).putAll(map);
 		} catch (Exception e) {
 			log.error("map转bean出现异常,采用安全方式继续...异常消息:{}", e.getMessage());
-			//如果出错则采用安全但较慢的方式
+			// 如果出错则采用安全但较慢的方式
 			safeAs(map, bean);
 		}
 		return bean;
@@ -148,7 +149,7 @@ public class UBean {
 			BeanMap.create(bean).putAll(map);
 		} catch (Exception e) {
 			log.error("map转bean出现异常,采用安全方式继续...异常消息:{}", e.getMessage());
-			//如果出错则采用安全但较慢的方式
+			// 如果出错则采用安全但较慢的方式
 			safeAs(map, bean);
 		}
 		return bean;
@@ -193,11 +194,13 @@ public class UBean {
 	}
 
 	private static boolean isSetter(Method method) {
-		return method.getName().startsWith("set") && method.getReturnType() == void.class && method.getParameterCount() == 1
-			&& Modifier.PUBLIC == method.getModifiers();
+		return method.getName().startsWith("set") && method.getReturnType() == void.class
+				&& method.getParameterCount() == 1
+				&& Modifier.PUBLIC == method.getModifiers();
 	}
 
-	private static boolean isPrivateAndNotNullField(Field field, Object bean) throws IllegalArgumentException, IllegalAccessException {
+	private static boolean isPrivateAndNotNullField(Field field, Object bean)
+			throws IllegalArgumentException, IllegalAccessException {
 		return Modifier.PRIVATE == field.getModifiers() && field.trySetAccessible() && field.get(bean) != null;
 	}
 
@@ -258,7 +261,8 @@ public class UBean {
 		return Collections.unmodifiableList(defaultNotNullSetters(UReflect.instance(klass)));
 	}
 
-	private static List<FastMethod> defaultNotNullSetters(Object bean) throws IllegalArgumentException, IllegalAccessException {
+	private static List<FastMethod> defaultNotNullSetters(Object bean)
+			throws IllegalArgumentException, IllegalAccessException {
 		Class<?> klass = bean.getClass();
 		List<FastMethod> methods = NOT_NULL_FIELD_SETTER_CACHE.get(klass);
 		if (methods == null) {

@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import phantom.aop.validation.annotation.Mapping;
 import phantom.constant.SortType;
 import phantom.mvc.data.QueryPage;
+import phantom.tool.validate.annotation.Mapping;
 
 /**
  * 获取评论信息参数

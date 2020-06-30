@@ -38,7 +38,8 @@ public class FinalController extends AbstractErrorController {
 
 	@RequestMapping("${server.servlet.context-path:${error.path:/error}}")
 	public void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
 	}
 
 	protected boolean isIncludeStackTrace(HttpServletRequest request, MediaType produces) {
@@ -46,7 +47,7 @@ public class FinalController extends AbstractErrorController {
 		if (include == IncludeStacktrace.ALWAYS) {
 			return true;
 		}
-		if (include == IncludeStacktrace.ON_TRACE_PARAM) {
+		if (include == IncludeStacktrace.ON_PARAM) {
 			return getTraceParameter(request);
 		}
 		return false;

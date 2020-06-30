@@ -33,15 +33,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import phantom.aop.validation.annotation.Mapping;
-import phantom.aop.validation.annotation.Mapping.IMapping;
-import phantom.aop.validation.annotation.Mapping.MappingHelper;
-import phantom.aop.validation.annotation.Match;
+
 import phantom.common.UEmpty;
 import phantom.common.UString;
 import phantom.configuration.SwaggerProperties;
 import phantom.reflect.UReflect;
 import phantom.reflect.UType;
+import phantom.tool.validate.annotation.Mapping;
+import phantom.tool.validate.annotation.Match;
+import phantom.tool.validate.annotation.Mapping.IMapping;
+import phantom.tool.validate.annotation.Mapping.MappingHelper;
 import springfox.documentation.builders.ModelPropertyBuilder;
 import springfox.documentation.service.AllowableListValues;
 import springfox.documentation.spi.DocumentationType;
@@ -73,7 +74,7 @@ public class DefaultModelPlugin implements ModelPropertyBuilderPlugin {
 	@Override
 	@SneakyThrows
 	public void apply(ModelPropertyContext context) {
-		BeanPropertyDefinition definition = context.getBeanPropertyDefinition().orNull();
+		BeanPropertyDefinition definition = context.getBeanPropertyDefinition().orElse(null);
 		if (definition == null) {
 			return;
 		}
@@ -93,8 +94,10 @@ public class DefaultModelPlugin implements ModelPropertyBuilderPlugin {
 			Class<? extends Enum<?>> enumType = legalEnum.value();
 			List<IMapping<?>> values = MappingHelper.getEnums(enumType);
 			Object defaultValue = MappingHelper.getDefaultValue(enumType);
-			AllowableListValues allowableListValues = new AllowableListValues(values.stream().map((item) -> item.getVal().toString()).collect(
-				Collectors.toList()), values.get(0).getVal().getClass().getSimpleName());
+			AllowableListValues allowableListValues = new AllowableListValues(
+					values.stream().map((item) -> item.getVal().toString()).collect(
+							Collectors.toList()),
+					values.get(0).getVal().getClass().getSimpleName());
 			ModelPropertyBuilder builder = context.getBuilder();
 			String name = MappingHelper.getName(enumType);
 			if (name == null) {
@@ -128,7 +131,7 @@ public class DefaultModelPlugin implements ModelPropertyBuilderPlugin {
 		String description = UString.orEmpty((String) UReflect.get(ModelPropertyBuilder.class, "description", builder));
 		String resolve = recursiveResolveList(UType.resolve(field.getGenericType()));
 		if (resolve != null) {
-			//如果还是有ApiModelProperty,就不在原描述后增加列表的描述
+			// 如果还是有ApiModelProperty,就不在原描述后增加列表的描述
 			if (!field.isAnnotationPresent(ApiModelProperty.class)) {
 				description = UString.concat(description, resolve);
 			}
@@ -182,7 +185,8 @@ public class DefaultModelPlugin implements ModelPropertyBuilderPlugin {
 	}
 
 	private String resolveRange(Field field) {
-		String min = Optional.ofNullable(field.getAnnotation(Min.class)).map((item) -> String.valueOf(item.value())).orElse(null);
+		String min = Optional.ofNullable(field.getAnnotation(Min.class)).map((item) -> String.valueOf(item.value()))
+				.orElse(null);
 		if (min == null) {
 			min = Optional.ofNullable(field.getAnnotation(DecimalMin.class)).map(DecimalMin::value).orElse(null);
 		}
@@ -202,7 +206,8 @@ public class DefaultModelPlugin implements ModelPropertyBuilderPlugin {
 				min = min == null ? null : UString.concat(min, "且不能等于最小值");
 			}
 		}
-		String max = Optional.ofNullable(field.getAnnotation(Max.class)).map((item) -> String.valueOf(item.value())).orElse(null);
+		String max = Optional.ofNullable(field.getAnnotation(Max.class)).map((item) -> String.valueOf(item.value()))
+				.orElse(null);
 		if (max == null) {
 			max = Optional.ofNullable(field.getAnnotation(DecimalMax.class)).map(DecimalMax::value).orElse(null);
 		}
@@ -224,10 +229,10 @@ public class DefaultModelPlugin implements ModelPropertyBuilderPlugin {
 		}
 		String digit = Optional.ofNullable(field.getAnnotation(Digits.class)).map((item) -> {
 			/*
-			String integer = String.valueOf(item.integer());
-			String fraction = String.valueOf(item.fraction());
-			return UString.concat("整数位", integer, ",", "小数位", fraction);
-			*/
+			 * String integer = String.valueOf(item.integer()); String fraction =
+			 * String.valueOf(item.fraction()); return UString.concat("整数位", integer, ",",
+			 * "小数位", fraction);
+			 */
 			return "";
 		}).orElse(null);
 		if (min == null && max == null && digit == null) {

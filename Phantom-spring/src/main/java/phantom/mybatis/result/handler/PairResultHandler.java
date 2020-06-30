@@ -102,7 +102,8 @@ public class PairResultHandler implements CustomHandler {
 	}
 
 	private void error(ResolvedType resolvedType) {
-		throw new IllegalArgumentException("不支持把" + resolvedType.getBriefDescription() + "转换为Pair<K,V>或者List<Pair<K,V>>!");
+		throw new IllegalArgumentException(
+				"不支持把" + resolvedType.getBriefDescription() + "转换为Pair<K,V>或者List<Pair<K,V>>!");
 	}
 
 	private class PairResultHandlerContext implements CustomHandlerContext {

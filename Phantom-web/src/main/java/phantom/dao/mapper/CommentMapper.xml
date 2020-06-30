@@ -2,48 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="phantom.dao.mapper.CommentMapper">
 
-	<select id="selectCommentInfo" resultType = "phantom.dao.model.result.CommentInfo">
-	SELECT
+	<select id="selectCommentInfo"
+		resultType="phantom.dao.model.result.CommentInfo">
+		SELECT
 		tb_comment.id AS id,
 		tb_comment.user_id AS userId,
-		tb_user.`name` AS username,
+		tb_user.`name`
+		AS username,
 		tb_comment.article_id AS articleId,
-		tb_comment.create_time AS createTime,
+		tb_comment.create_time
+		AS createTime,
 		tb_comment.content AS content,
 		tb_comment.likes AS likes,
-		tb_comment.dislikes AS dislikes 
-	FROM
+		tb_comment.dislikes AS dislikes
+		FROM
 		tb_comment
-		LEFT JOIN tb_user ON tb_comment.user_id = tb_user.id 
-	WHERE
-		tb_comment.`status` = 1 
-	AND tb_comment.article_id = #{param.articleId}
-	<trim prefix="ORDER BY" suffixOverrides=",">
-		<choose>
-			<when test="param.createTime == 1">
-				tb_comment.create_time ASC,
-			</when>
-			<when test="param.createTime == 2">
-				tb_comment.create_time DESC,
-			</when>
-		</choose>
-		<choose>
-			<when test="param.likes == 1">
-				tb_comment.likes ASC,
-			</when>
-			<when test="param.likes == 2">
-				tb_comment.likes DESC,
-			</when>
-		</choose>
-		<choose>
-			<when test="param.dislikes == 1">
-				tb_comment.dislikes ASC,
-			</when>
-			<when test="param.dislikes == 2">
-				tb_comment.dislikes DESC,
-			</when>
-		</choose>
-	</trim>
+		LEFT JOIN tb_user ON tb_comment.user_id = tb_user.id
+		WHERE
+		tb_comment.`status` = 1
+		AND tb_comment.article_id = #{param.articleId}
+		<trim prefix="ORDER BY" suffixOverrides=",">
+			<choose>
+				<when test="param.createTime == 1">
+					tb_comment.create_time ASC,
+				</when>
+				<when test="param.createTime == 2">
+					tb_comment.create_time DESC,
+				</when>
+			</choose>
+			<choose>
+				<when test="param.likes == 1">
+					tb_comment.likes ASC,
+				</when>
+				<when test="param.likes == 2">
+					tb_comment.likes DESC,
+				</when>
+			</choose>
+			<choose>
+				<when test="param.dislikes == 1">
+					tb_comment.dislikes ASC,
+				</when>
+				<when test="param.dislikes == 2">
+					tb_comment.dislikes DESC,
+				</when>
+			</choose>
+		</trim>
 	</select>
-    
+
 </mapper>
